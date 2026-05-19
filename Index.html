@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voyage of the Glaciers · Alaska 2025</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { background: #F8F7F4; }
+    /* Hide scrollbar on day tabs */
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+const allDays = [
+  // ── VANCOUVER ──────────────────────────────────────────────
+  {
+    id: "thu", label: "Thu · Aug 13", shortLabel: "AUG 13", section: "vancouver",
+    title: "Arrival Day", subtitle: "Land, Clear Customs, Settle In",
+    photo: "https://images.unsplash.com/photo-1559511260-66a654ae982a?w=1200&auto=format&fit=crop&q=80",
+    color: "#2D6A4F", bg: "#EEF7F2", border: "#B7DFC9", emoji: "🏙️",
+    items: [
+      { time: "10:45 AM", emoji: "✈️", title: "Land at YVR", detail: "AA 1415 wheels down. Welcome to Canada. Now begins the part nobody puts in the Instagram caption.", type: "logistics" },
+      { time: "10:45–12:00", emoji: "🛃", title: "Canadian Customs & Baggage", detail: "Budget 60–75 minutes from wheels down to outside the terminal. Deplane → CBSA kiosks (scan passport, answer questions, get receipt) → officer queue → baggage claim → exit. Electronic kiosks are fast individually, but 6 people plus a full morning of international arrivals adds up.", type: "logistics", tip: "Download the ArriveCAN app before you leave Dallas and complete your declaration in advance. Have everyone's passport out before you hit the hall." },
+      { time: "12:00 PM", emoji: "🚕", title: "Rideshare to Airbnb", detail: "2350 East 49th Ave. For 6 people with luggage you'll need two rideshares or a pre-booked van. Check-in is 3pm — call ahead to arrange an early bag drop.", type: "logistics", tip: "Uber XL or a pre-booked van transfer. International Arrivals pickup is Level 2, outer curb at YVR." },
+      { time: "1:00 PM", emoji: "☕", title: "Nemesis Coffee", detail: "555 Great Northern Way. One of the best cafes in the world, and it earns it. Pork belly benny, fried chicken sandwich, orange croissant. Grab a table — you just cleared customs with your parents.", type: "coffee", address: "555 Great Northern Way", hours: "Thu 8am–4pm", tip: "10-min Uber from the Airbnb. Go before or after the bag drop depending on timing." },
+      { time: "2:30 PM", emoji: "🏠", title: "Check In + Freshen Up", detail: "Get settled. Regroup. Figure out who needs a nap and who's ready to roll.", type: "logistics" },
+      { time: "3:30 PM", emoji: "🌿", title: "Gastown Walkabout", detail: "Wander Water Street, see the steam clock, pop into shops. 15-min Uber from the Airbnb. Good gentle warm-up for a group that just crossed a border.", type: "sightseeing", tip: "Cobblestone streets. Comfortable shoes. Don't be that person." },
+      { time: "5:00 PM", emoji: "🍺", title: "Strathcona Beer Company", detail: "895 E Hastings St. Modern brewery, killer pizza, poutine, mini arcade corner. Happy hour beers at $7. Close enough to Gastown to walk or grab a quick ride.", type: "beer", address: "895 E Hastings St", hours: "Thu 12pm–10pm", tip: "Try the Big Sexy Funk Hazy IPA. Not a dare — a recommendation." },
+      { time: "7:00 PM", emoji: "🍽️", title: "Group Dinner — Pick One", detail: "See the 'Group Dinners' tab for three solid options that work for all six. Thursday is the casual night — save the splurge for Friday.", type: "dinner", tip: "Make a reservation regardless of which you pick. Six people without a rez on Thursday night is asking for a 45-minute wait." },
+    ],
+  },
+  {
+    id: "fri", label: "Fri · Aug 14", shortLabel: "AUG 14", section: "vancouver",
+    title: "Full Day", subtitle: "The Good Stuff",
+    photo: "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1200&auto=format&fit=crop&q=80",
+    color: "#1B4965", bg: "#EBF4FA", border: "#B3D4E8", emoji: "🌉",
+    items: [
+      { time: "8:30 AM", emoji: "☕", title: "Revolver Coffee", detail: "325 Cambie St, Gastown. 4.6 stars, 2,700+ reviews. Pour-over specialists. The coffee flight — different milk ratios showing how flavor shifts — is genuinely cool. Closed Sundays, so today's your only shot.", type: "coffee", address: "325 Cambie St", hours: "Fri 7:30am–5pm", tip: "Before 9am or prepare to wait. Worth it either way." },
+      { time: "10:00 AM", emoji: "🌉", title: "Capilano Suspension Bridge", detail: "~$70 CAD/adult. The Treetops Adventure and Cliffwalk are the payoff — walking among 700-year-old Douglas firs 100ft up. Free shuttle from downtown.", type: "sightseeing", address: "3735 Capilano Rd, North Vancouver", hours: "Daily 8:30am–8pm", tip: "Go early — crowds build by 11am. Free shuttle from Canada Place." },
+      { time: "1:00 PM", emoji: "🐟", title: "Granville Island Public Market", detail: "Grab lunch from the food hall — fish and chips, chowder, smoked salmon. Lee's Donuts if you haven't.", type: "food", address: "1689 Johnston St", hours: "Daily 9am–6pm", tip: "Skip the sit-down restaurants. Market stalls are the move." },
+      { time: "3:00 PM", emoji: "🛶", title: "Option: Deep Cove Kayaking", detail: "40-min drive. Fjord water, mountains, seals, maybe jellyfish. 2-hour rental fits before dinner. OR swap for Kitsilano Beach if the group needs a slower afternoon.", type: "activity", address: "2156 Banbury Rd, North Vancouver", hours: "Daily 9am–6pm", tip: "Know your crowd after Capilano. If anyone's dragging, beach it instead." },
+      { time: "5:30 PM", emoji: "🍺", title: "Brassneck Brewery", detail: "2148 Main St. Pre-dinner drinks. Tiny neighborhood brewery, rotating taps, meat pies to line the stomach. Old Geezer porter is legendary.", type: "beer", address: "2148 Main St", hours: "Fri 2pm–11pm", tip: "Parking on Main St is a nightmare — Uber it." },
+      { time: "7:30 PM", emoji: "🍽️", title: "Group Dinner — Pick One", detail: "Friday is the splurge night. See 'Group Dinners' tab. L'Abattoir is the move for you and Becca — or pick something the whole table can enjoy.", type: "dinner", tip: "🚨 L'Abattoir is closed Sunday. Tonight is your ONLY shot if you're going." },
+    ],
+  },
+  {
+    id: "sat-morning", label: "Sat · Aug 15", shortLabel: "AUG 15", section: "vancouver",
+    title: "Morning → Board", subtitle: "Last Coffee, Then Alaska",
+    photo: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1200&auto=format&fit=crop&q=80",
+    color: "#5B21B6", bg: "#F3EEFF", border: "#D0B8F5", emoji: "🚢",
+    items: [
+      { time: "8:00 AM", emoji: "☕", title: "Final Coffee Run", detail: "Matchstick Coffee on Hastings or Kafka's Coffee on Main. Last real coffee before cruise ship coffee.", type: "coffee", tip: "Nemesis opens at 8am weekends. Matchstick at 7:30am if you need to roll early." },
+      { time: "9:30 AM", emoji: "🧳", title: "Pack Up + Check Out", detail: "Coordinate the group. Confirm everyone has their passport. Nobody leaves a charger behind.", type: "logistics" },
+      { time: "11:00 AM", emoji: "🚢", title: "Head to Canada Place", detail: "Princess departs from Canada Place. Arrive 2–2.5 hours before departure. With 6 people and cruise luggage, build in extra buffer.", type: "logistics", tip: "Confirm your exact departure time from your Princess booking. Don't wing it." },
+      { time: "12:00 PM+", emoji: "⚓", title: "Board the Ship", detail: "Rooms aren't ready until 1–2pm. Head straight to the Lido deck, get a drink, and start transitioning to Alaska mode.", type: "logistics", tip: "Muster drill is mandatory before sailaway. Don't be the one who holds it up." },
+    ],
+  },
+
+  // ── GROUP DINNERS ──────────────────────────────────────────
+  {
+    id: "dinners", label: "Group Dinners", shortLabel: "DINNERS", section: "dinners",
+    title: "Group Dinner Options", subtitle: "Something for everyone at the table",
+    photo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&auto=format&fit=crop&q=80",
+    color: "#9D174D", bg: "#FFF1F2", border: "#FECDD3", emoji: "🍽️",
+    items: [
+      { time: "OPTION 1", emoji: "🐟", title: "Salmon n' Bannock", detail: "1128 W Broadway. Indigenous Canadian cuisine — bison, salmon, bannock bread, game sausage with blueberry sage sauce. Most unique dining in Vancouver. The menu reads approachably, the story behind it is excellent, and the flavors are unlike anything back home. 4.7 stars, 1,500+ reviews.", type: "dinner", address: "1128 W Broadway #7", hours: "Daily 3pm–9pm", tip: "Book well in advance — small room, fills fast. Bison bone marrow and game sausage are must-orders." },
+      { time: "OPTION 2", emoji: "🍔", title: "The Flying Pig — Gastown", detail: "102 Water St. Canadian comfort food done well — elevated pub fare with great burgers, mussels, poutine. Spacious enough for 6, right in Gastown, and nobody gets stranded on the menu. Good casual Thursday option.", type: "dinner", address: "102 Water St", hours: "Check current hours", tip: "Low-key, great neighborhood, everyone finds something. Perfect warm-up before Friday's splurge." },
+      { time: "OPTION 3", emoji: "🥩", title: "Cactus Club — Coal Harbour", detail: "1085 Canada Place. Waterfront views of the harbor and Stanley Park. Impressive menu (mushroom striploin, Creole spinach dip, fresh Pacific salmon) without anything intimidating. The crab dip is legitimately one of the best things in the city.", type: "dinner", address: "1085 Canada Pl", hours: "Daily 11am–midnight", tip: "Best for Friday night if the group wants views and atmosphere. Walk to Canada Place after — you're already there for Saturday's boarding." },
+      { time: "BONUS", emoji: "⭐", title: "L'Abattoir — For You & Becca", detail: "217 Carrall St, Gastown. Michelin-recommended. The tartare and baked oysters are non-negotiable. Works great as a split — parents at Flying Pig or Cactus Club, you two at L'Abattoir. Or go as a full group if everyone's up for it.", type: "dinner", address: "217 Carrall St", hours: "Tue–Sat 5pm–11pm · CLOSED MON & SUN", tip: "🚨 CLOSED SUNDAYS. Friday is your ONLY night. Make a reservation before you close this tab." },
+    ],
+  },
+
+  // ── CRUISE ─────────────────────────────────────────────────
+  {
+    id: "sun", label: "Sun · Aug 17", shortLabel: "AUG 17", section: "cruise",
+    title: "Day at Sea", subtitle: "Inside Passage",
+    photo: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&auto=format&fit=crop&q=80",
+    color: "#0F4C75", bg: "#E8F4FD", border: "#93C5FD", emoji: "🌊",
+    items: [
+      { time: "All Day", emoji: "🌊", title: "Scenic Inside Passage Cruising", detail: "The ship winds through a labyrinth of fjords, channels, and islands. This is what Alaska looks like before Alaska starts.", type: "scenic", tip: "Get outside early. The light in the Inside Passage at 7am is something else entirely." },
+      { time: "Morning", emoji: "🐋", title: "Wildlife Watch", detail: "Humpback whales, orcas, Dall's porpoises, harbor seals, and bald eagles are all common. Binoculars on deck.", type: "wildlife", tip: "Bow and Lido deck are your best vantage points. Bring a jacket — windier than you think." },
+      { time: "Afternoon", emoji: "🍽️", title: "Explore the Ship + Make Reservations", detail: "Get oriented, try the dining options. Book specialty restaurants (Crown Grill, Sabatini's) for later in the week — tonight is a good night to do it.", type: "onboard", tip: "Book Crown Grill for Glacier Bay night. You'll want something special after a full day in the park." },
+    ],
+  },
+  {
+    id: "mon", label: "Mon · Aug 18", shortLabel: "AUG 18", section: "cruise",
+    title: "Ketchikan", subtitle: "Salmon Capital of the World",
+    photo: "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=1200&auto=format&fit=crop&q=80",
+    color: "#065F46", bg: "#ECFDF5", border: "#6EE7B7", emoji: "🎣",
+    items: [
+      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Ships dock right downtown — nearly everything walkable from the pier. Compact, colorful, genuinely fun. August = active salmon run in the creek.", type: "logistics", tip: "Know your all-aboard time. Missing the ship somewhere with no roads out is a very expensive adventure." },
+      { time: "Morning", emoji: "🪵", title: "Totem Pole Heritage Center", detail: "One of the world's largest collections of standing totem poles. Tlingit, Haida, and Tsimshian tribal art. Guided tours worth it for context.", type: "sightseeing", tip: "Also check Saxman Native Village 2.5 miles south — larger outdoor collection with carvers working live." },
+      { time: "Morning", emoji: "☕", title: "Baleen Brewing", detail: "Small local brewery punching above its weight. A pint before noon in Alaska is culturally appropriate.", type: "beer", tip: "Go early before cruise ship crowds pack it." },
+      { time: "Midday", emoji: "🦅", title: "Creek Street Boardwalk", detail: "Historic wooden boardwalk over Ketchikan Creek. Boutiques, galleries, Dolly's House museum. Salmon fighting upstream are visible right from the boardwalk in August.", type: "sightseeing", tip: "The August salmon run is wild — fish jumping inches from you." },
+      { time: "Afternoon", emoji: "🥃", title: "Uncharted Alaska Distillery", detail: "Local craft spirits. Worth a stop before heading back.", type: "beer", tip: "Small operation — bring a card." },
+      { time: "Evening", emoji: "🚢", title: "Back Aboard + Sailaway", detail: "The scenery leaving Ketchikan through the channel is spectacular. Get a drink and get on deck.", type: "logistics" },
+    ],
+  },
+  {
+    id: "tue", label: "Tue · Aug 19", shortLabel: "AUG 19", section: "cruise",
+    title: "Juneau", subtitle: "Alaska's Capital · More Ashore Late Night",
+    photo: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=80",
+    color: "#1E3A5F", bg: "#EFF6FF", border: "#93C5FD", emoji: "🏔️",
+    items: [
+      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Princess's 'More Ashore' late-night stay means the ship is docked well into the evening. Biggest port day. Use every hour.", type: "logistics", tip: "Juneau has zero roads connecting it to the rest of North America. Genuinely remote despite being the state capital." },
+      { time: "Morning", emoji: "☕", title: "Heritage Coffee", detail: "Local Juneau institution. Proper espresso before anything else. Multiple locations — downtown is most convenient from the pier.", type: "coffee", tip: "Get here first. Everything else builds from here." },
+      { time: "Morning", emoji: "🧊", title: "Mendenhall Glacier", detail: "A tidewater glacier accessible from town — which is absurd and amazing. Helicopter glacier walks available. Even the visitor center overlook is jaw-dropping. Bucket-list item.", type: "sightseeing", tip: "Book a helicopter glacier walk. Spendy but 'I walked on a glacier' is a forever story." },
+      { time: "Afternoon", emoji: "🐳", title: "Whale Watching", detail: "Juneau's waters are among the most reliable in Alaska for humpbacks. Multiple operators do 3-4 hour tours. Book independently — usually cheaper than ship excursions.", type: "activity", tip: "Gastineau Excursions and Allen Marine Tours are well-rated. Book ahead." },
+      { time: "Evening", emoji: "🍺", title: "Alaskan Brewing Company", detail: "The OG Alaska craft brewery. Amber Ale basically defined the category. Taproom, tours, full lineup.", address: "5429 Shaune Dr", type: "beer", tip: "About 10 min from downtown — rideshare it. Worth every step." },
+      { time: "Late Eve", emoji: "🍽️", title: "Devil's Club Brewing", detail: "Newer Juneau brewery with great pub food. Good for late-night eats while the ship is still in port. Most cruise passengers are back onboard by 8pm — this is your window.", type: "beer", tip: "Named after Alaska's signature spiky plant that everyone walks into once and never forgets." },
+    ],
+  },
+  {
+    id: "wed", label: "Wed · Aug 20", shortLabel: "AUG 20", section: "cruise",
+    title: "Skagway", subtitle: "Gateway to the Klondike Gold Rush",
+    photo: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1200&auto=format&fit=crop&q=80",
+    color: "#7C3A00", bg: "#FFF7ED", border: "#FCD34D", emoji: "🚂",
+    items: [
+      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Under 1,000 residents, one of Alaska's most dramatic histories. Nestled at the end of a fjord surrounded by mountains. The whole downtown is a National Historic Park.", type: "logistics", tip: "Everything is walkable from the pier. Broadway Street is the main drag." },
+      { time: "Morning", emoji: "☕", title: "Skagway Brewing Company", detail: "Right on Broadway — first stop off the ship. Grab a Spruce Tip Ale and some food. You have a relaxed morning before the 2:15pm railway departure, so use it.", address: "7th & Broadway", type: "beer", tip: "Spruce Tip Ale is made with locally harvested spruce tips. Not getting that in Dallas." },
+      { time: "Morning", emoji: "🪙", title: "Klondike Gold Rush National Historic Park", detail: "Free to enter — the whole historic downtown is the park. Ranger-led walking tours run in the morning and are excellent. Perfect way to fill the hours before the railway and get the full gold rush context before you ride through it.", type: "sightseeing", tip: "Morning ranger tours are less crowded. Check the visitor center schedule when you arrive." },
+      { time: "~1:45 PM", emoji: "🎟️", title: "Head to the Depot", detail: "White Pass & Yukon Route depot is right on Broadway near the pier — hard to miss. Check in 30 minutes before departure. Confirm your tickets and get your car assignment.", type: "logistics", tip: "Sit on the LEFT side of the train heading out of Skagway for the best views of the gorge and Dead Horse Gulch." },
+      { time: "2:15 PM", emoji: "🚂", title: "White Pass & Yukon Route Railway", detail: "Your booked 2:15pm tour — approximately 2.5 hours. Narrow-gauge railroad built in 1898 that climbs 3,000 feet through dramatic mountain passes. Dead Horse Gulch, Bridal Veil Falls, the original gold rush trail visible below. One of the most scenic rail rides in North America. Back in Skagway by ~4:45pm.", type: "sightseeing", tip: "Window seats go fast — stake one out early once you board. The views are worth it." },
+      { time: "~5:00 PM", emoji: "🍺", title: "Post-Train Beer", detail: "You'll be back in town with an hour or so before all-aboard. Return to Skagway Brewing or pop into Klondike Brewing if it's less crowded. You just rode a 128-year-old train through the Klondike. That earns a beer.", type: "beer", tip: "Know your all-aboard time and don't push it. Missing the ship in Skagway — population 900, zero roads out — is a special kind of problem." },
+    ],
+  },
+  {
+    id: "thu-glacier-bay", label: "Thu · Aug 21", shortLabel: "AUG 21", section: "cruise",
+    title: "Glacier Bay", subtitle: "National Park · Full Day Scenic Cruising",
+    photo: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&auto=format&fit=crop&q=80",
+    color: "#164E63", bg: "#ECFEFF", border: "#67E8F9", emoji: "🧊",
+    items: [
+      { time: "All Day", emoji: "🧊", title: "Glacier Bay National Park", detail: "UNESCO World Heritage Site. The ship spends the entire day cruising 65 miles into the bay. Margerie Glacier calves massive chunks of ice with a boom you feel in your chest.", type: "scenic", tip: "GET UP EARLY. Morning light and wildlife are why people fly to Alaska. Set an alarm." },
+      { time: "Morning", emoji: "🎙️", title: "Park Ranger Narration", detail: "A National Park Service ranger boards the ship and narrates live — geology, glacial history, wildlife. Genuinely excellent.", type: "onboard", tip: "Check the Princess app for where the ranger will be presenting from." },
+      { time: "All Day", emoji: "🐋", title: "Wildlife: The Full Card", detail: "Humpback whales, orcas, harbor seals on ice floes, brown bears on the coastline, bald eagles, mountain goats. Binoculars mandatory.", type: "wildlife", tip: "Dress in full layers. Colder than you expect this deep into the bay even in August." },
+      { time: "Afternoon", emoji: "🏔️", title: "Johns Hopkins Inlet", detail: "If conditions allow, the ship may navigate into this rarely visited inlet — cascading waterfalls, snow-capped peaks, jaw-dropping.", type: "scenic", tip: "Captain's discretion based on ice conditions. Cross your fingers." },
+      { time: "Evening", emoji: "🍽️", title: "Special Dinner Night", detail: "Crown Grill or Sabatini's. You just spent a day in one of the most extraordinary places on Earth. Celebrate accordingly.", type: "onboard", tip: "Book specialty restaurants in advance through the Princess app." },
+    ],
+  },
+  {
+    id: "fri-college-fjord", label: "Fri · Aug 22", shortLabel: "AUG 22", section: "cruise",
+    title: "College Fjord → Whittier", subtitle: "Final Scenic Day · Disembark",
+    photo: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&auto=format&fit=crop&q=80",
+    color: "#312E81", bg: "#EEF2FF", border: "#A5B4FC", emoji: "⚓",
+    items: [
+      { time: "Morning/Eve", emoji: "🧊", title: "College Fjord Scenic Cruising", detail: "Prince William Sound. 16 glaciers named after Ivy League colleges. Harvard Glacier dominates the end of the fjord and is actively advancing while most glaciers retreat. You'll hear it calve.", type: "scenic", tip: "Northbound typically does College Fjord in the evening — verify against your ship's schedule." },
+      { time: "All Day", emoji: "🦦", title: "Wildlife: Prince William Sound", detail: "Sea otters floating on their backs wrapped in kelp, harbor seals on ice chunks, Dall's porpoises, humpbacks. Peak Alaska.", type: "wildlife", tip: "Sea otters wrapped in kelp = peak Alaska group chat content." },
+      { time: "Evening", emoji: "🥂", title: "Last Night on the Ship", detail: "Pack bags tonight. Set luggage outside by midnight if using Princess's service. Last dinner, last drinks, last Alaskan water views from a deck. Make it count.", type: "onboard", tip: "Don't over-drink. You have a full Anchorage day tomorrow and a midnight flight. Future you will thank you." },
+    ],
+  },
+
+  // ── ANCHORAGE DAY ──────────────────────────────────────────
+  {
+    id: "sat-anchorage", label: "Sat · Aug 23", shortLabel: "AUG 23", section: "anchorage",
+    title: "Anchorage Day", subtitle: "Disembark → Full Day → Midnight Flight",
+    photo: "https://images.unsplash.com/photo-1474524955719-b9f87c50ce47?w=1200&auto=format&fit=crop&q=80",
+    color: "#B45309", bg: "#FFFBEB", border: "#FDE68A", emoji: "🦅",
+    items: [
+      {
+        time: "Morning",
+        emoji: "🚢",
+        title: "Disembark Whittier",
+        detail: "Whittier is a tiny port — most of the permanent residents live in a single building called Begich Towers. Truly. Your pre-booked shuttle picks up at the terminal and heads north to Anchorage, about 60 miles.",
+        type: "logistics",
+        tip: "The Anton Anderson Memorial Tunnel out of Whittier is a one-lane, alternating-direction tunnel shared by cars and trains. There can be a wait of up to 30 minutes depending on timing. Factor that into your shuttle's schedule.",
+      },
+      {
+        time: "~10:00 AM",
+        emoji: "☕",
+        title: "Snow City Cafe — Breakfast",
+        detail: "1034 W 4th Ave. The quintessential Anchorage breakfast spot. 4.5 stars, 4,100+ reviews. Smoked salmon Benedict, crab cake Benedict, cinnamon buns that people dream about. This is your first real sit-down meal off the ship — earn it.",
+        type: "coffee",
+        address: "1034 W 4th Ave",
+        hours: "Daily 7am–3pm",
+        tip: "It gets busy — put your name in when you arrive. The cinnamon rolls are as good as the internet claims.",
+      },
+      {
+        time: "Late Morning",
+        emoji: "🏛️",
+        title: "Anchorage Museum",
+        detail: "625 C St, downtown. Four floors covering Alaska art, history, Native Alaskan culture, and science exhibits. The Arctic Studies Center in partnership with the Smithsonian is genuinely excellent. Budget 1.5–2 hours — you could easily spend more.",
+        type: "sightseeing",
+        address: "625 C St",
+        hours: "Daily 10am–6pm · $25/adult",
+        tip: "Good option for the parents — zero physical exertion, lots to absorb, AC. It's the best museum in Alaska and people consistently say they underestimated it.",
+      },
+      {
+        time: "Afternoon",
+        emoji: "🚴",
+        title: "Tony Knowles Coastal Trail",
+        detail: "11-mile paved trail hugging the Anchorage coastline along Cook Inlet. Sweeping views of the inlet, the Alaska Range, and on clear days Denali itself. Moose sightings are genuinely common. Rent bikes downtown or just walk a few miles.",
+        type: "sightseeing",
+        address: "Starts near downtown Anchorage",
+        hours: "Open year-round",
+        tip: "Bike rentals available near the trailhead. Even a 2-3 mile out-and-back gives you the views without committing to the full 11 miles.",
+      },
+      {
+        time: "Afternoon",
+        emoji: "🐻",
+        title: "Option: Alaska Wildlife Conservation Center",
+        detail: "43520 Seward Hwy — about 40 min south of Anchorage on the way back from Whittier. Brown bears, black bears, moose, bison, musk ox, caribou in large natural enclosures. 4.7 stars, 6,400+ reviews. Works great as a stop on the shuttle route from Whittier IF you arrange it in advance.",
+        type: "activity",
+        address: "43520 Seward Hwy, Girdwood",
+        hours: "Daily 8:30am–6pm",
+        tip: "Ask your shuttle driver or operator if they'll stop here en route from Whittier. Many do. Best wildlife experience for the group short of a floatplane.",
+      },
+      {
+        time: "5:30 PM",
+        emoji: "🍺",
+        title: "49th State Brewing — Dinner",
+        detail: "717 W 3rd Ave. Anchorage's best brewpub. 4.6 stars, 11,000+ reviews. King crab grilled cheese, elk burger, yak burger, Alaskan halibut tacos. Big portions, great atmosphere, outstanding beer list. The kind of place that makes you wish your flight was tomorrow.",
+        type: "beer",
+        address: "717 W 3rd Ave",
+        hours: "Daily 11am–11pm",
+        tip: "Make a reservation for 6 — it gets busy on Saturday nights. This is your last Alaskan meal. Order the thing you can't get back home.",
+      },
+      {
+        time: "~8:00 PM",
+        emoji: "🚕",
+        title: "Head to ANC Airport",
+        detail: "Ted Stevens Anchorage International Airport. About 10-15 min from downtown. Your flight departs around midnight — arrive by 9:30–10pm to clear security without rushing. International-ish vibe with plenty of bars and restaurants airside if you need to kill time.",
+        type: "logistics",
+        tip: "ANC is not a huge airport — security lines are manageable. But don't show up at 11:30 for a midnight flight after a long day. Give yourselves a cushion.",
+      },
+      {
+        time: "~Midnight",
+        emoji: "✈️",
+        title: "ANC → DFW",
+        detail: "Wheels up. Trip complete. You've seen Glacier Bay, walked on a glacier, watched humpbacks breach, had salmon in five different port cities, and closed out every craft brewery in Southeast Alaska. Not bad.",
+        type: "logistics",
+        tip: "Confirm your exact flight details against your booking. And sleep on the plane — you've earned it.",
+      },
+    ],
+  },
+  // ── BREWERIES & DISTILLERIES ───────────────────────────────
+  {
+    id: "breweries", label: "Craft Beer Guide", shortLabel: "BEER", section: "breweries",
+    title: "Breweries & Distilleries", subtitle: "Every pour, every port, every stop",
+    photo: "https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=1200&auto=format&fit=crop&q=80",
+    color: "#1D4ED8", bg: "#EFF6FF", border: "#BFDBFE", emoji: "🍺",
+    items: [
+      // ── VANCOUVER ──
+      {
+        time: "VANCOUVER",
+        emoji: "🏙️",
+        title: "Vancouver, BC",
+        detail: "Three brewery stops across two days — each one a distinct vibe. Vancouver has one of the best craft beer scenes in Canada and these three cover the full spectrum.",
+        type: "city",
+      },
+      {
+        time: "Thu Evening",
+        emoji: "🍺",
+        title: "Strathcona Beer Company",
+        detail: "Modern, design-forward brewery in the Strathcona neighborhood. Pizza, poutine, a mini arcade corner, and rotating taps that actually rotate. Happy hour beers hit $7. Your first Alaskan-adjacent pint of the trip — get here Thursday evening after Gastown.",
+        type: "beer",
+        address: "895 E Hastings St, Vancouver",
+        hours: "Daily 12pm–10pm",
+        tip: "Big Sexy Funk Hazy IPA if it's on. Yes, that's a real beer. Yes, it's good.",
+      },
+      {
+        time: "Fri Morning",
+        emoji: "🍺",
+        title: "Brassneck Brewery",
+        detail: "Tiny neighborhood brewery on Main St that punches well above its weight. Always-rotating taps, meat pies to line the stomach, the kind of place where regulars know each other by name. Old Geezer porter and Stockholm Syndrome saison are the legends — but whatever's on is worth trying.",
+        type: "beer",
+        address: "2148 Main St, Vancouver",
+        hours: "Fri 2pm–11pm",
+        tip: "Pre-dinner drinks Friday before L'Abattoir. Parking on Main is brutal — Uber it.",
+      },
+      {
+        time: "Sat Morning",
+        emoji: "🍺",
+        title: "Granville Island Brewing",
+        detail: "If you have time Saturday before boarding, the original Granville Island taproom is steps from the Public Market. One of BC's oldest craft breweries — the Island Lager is iconic, the taproom is laid-back, and it's a fine sendoff before Canada Place.",
+        type: "beer",
+        address: "1441 Cartwright St, Vancouver",
+        hours: "Daily 11am–9pm",
+        tip: "Optional Saturday morning add-on only if time allows before boarding. Don't miss the ship for a pint.",
+      },
+      // ── KETCHIKAN ──
+      {
+        time: "KETCHIKAN",
+        emoji: "🎣",
+        title: "Ketchikan, AK",
+        detail: "Two stops in a compact downtown — easy to hit both in a port day. The craft scene here is small but genuine.",
+        type: "city",
+      },
+      {
+        time: "Port Day AM",
+        emoji: "🍺",
+        title: "Baleen Brewing",
+        detail: "Small local brewery that quietly overachieves. Named after whale baleen — fitting for Southeast Alaska. The rotating tap list leans Pacific Northwest style with Alaskan character. Get here early before cruise ship crowds discover it.",
+        type: "beer",
+        tip: "Go first thing off the ship. Once the cruise crowd hits, it gets tight.",
+      },
+      {
+        time: "Port Day PM",
+        emoji: "🥃",
+        title: "Uncharted Alaska Distillery",
+        detail: "Craft spirits operation in Ketchikan. Local small-batch distilling — worth a tasting if you want something beyond beer. The spruce tip gin is the standout and tastes like Southeast Alaska in a glass.",
+        type: "beer",
+        tip: "Bring a card — small operations sometimes have issues with ship-issued accounts.",
+      },
+      // ── JUNEAU ──
+      {
+        time: "JUNEAU",
+        emoji: "🏔️",
+        title: "Juneau, AK",
+        detail: "The best port for beer on the entire trip. Two excellent stops, and Princess's More Ashore program gives you a late-night stay to actually use them both.",
+        type: "city",
+      },
+      {
+        time: "Port Day Eve",
+        emoji: "🍺",
+        title: "Alaskan Brewing Company",
+        detail: "The OG. Founded in 1986, the Alaskan Brewing Company was one of the first craft breweries in Alaska and helped define the category. The Amber Ale is a classic — smooth, malt-forward, and genuinely good. The taproom is the move: full tap list, tours available, and the story of how they built a brewery in a city with no roads is worth knowing.",
+        type: "beer",
+        address: "5429 Shaune Dr, Juneau",
+        hours: "Check current taproom hours",
+        tip: "About 10 min from downtown — rideshare it. Don't walk. Worth the trip.",
+      },
+      {
+        time: "Port Day Late",
+        emoji: "🍺",
+        title: "Devil's Club Brewing",
+        detail: "Newer Juneau brewery with serious ambition. Great pub food menu alongside the pints. Named after the thorny, unavoidable plant that blankets Southeast Alaska — if you've ever hiked here you've met it. Takes advantage of the late-night port stay: most cruise passengers are back on the ship by 8pm, so this is your window to experience Juneau like a local.",
+        type: "beer",
+        tip: "Late evening only — this is the reward for staying in port longer than everyone else.",
+      },
+      // ── SKAGWAY ──
+      {
+        time: "SKAGWAY",
+        emoji: "🚂",
+        title: "Skagway, AK",
+        detail: "Two options in a very small town. Skagway Brewing is the anchor — Klondike is the backup if it's packed.",
+        type: "city",
+      },
+      {
+        time: "Port Day AM",
+        emoji: "🍺",
+        title: "Skagway Brewing Company",
+        detail: "Right on Broadway, impossible to miss. Full food menu alongside the taps — solid burgers and pub fare if you need to fuel up before the White Pass Railway. The Spruce Tip Ale is made with locally harvested spruce tips and tastes exactly like the forests you've been sailing through all week.",
+        type: "beer",
+        address: "7th & Broadway, Skagway",
+        tip: "Your 2:15pm train is booked — morning is yours. First stop of the day: orient, eat, drink. Spruce Tip Ale is the must-order.",
+      },
+      {
+        time: "Port Day PM",
+        emoji: "🍺",
+        title: "Klondike Brewing",
+        detail: "Smaller, more low-key option if Skagway Brewing is overrun with cruise passengers. Good backup — same neighborhood, more laid-back vibe.",
+        type: "beer",
+        tip: "Treat this as overflow — if Skagway Brewing has a 20-minute wait, walk here instead.",
+      },
+      // ── ANCHORAGE ──
+      {
+        time: "ANCHORAGE",
+        emoji: "🦅",
+        title: "Anchorage, AK",
+        detail: "Two great options on your final day. 49th State is dinner — Humpy's is a backup or addition depending on how much time you have before the midnight flight.",
+        type: "city",
+      },
+      {
+        time: "Sat Evening",
+        emoji: "🍺",
+        title: "49th State Brewing",
+        detail: "Anchorage's best brewpub and your final Alaskan meal. 4.6 stars across 11,000+ reviews. The tap list is excellent but the food is the real draw — king crab grilled cheese, elk burger, yak burger, halibut tacos. Big portions, great atmosphere, mountain views on a clear day. This is how you end a trip to Alaska.",
+        type: "beer",
+        address: "717 W 3rd Ave, Anchorage",
+        hours: "Daily 11am–11pm",
+        tip: "Make a reservation for 6 on a Saturday night. Do not wing this one.",
+      },
+      {
+        time: "Sat Afternoon",
+        emoji: "🍺",
+        title: "Humpy's Great Alaskan Alehouse",
+        detail: "Anchorage institution with one of the longest tap lists in Alaska — 50+ handles at any given time. Great salmon chowder fries (basically Alaskan poutine), good halibut tacos. More bar than brewpub, more locals than tourists. Good for afternoon drinks before dinner at 49th State.",
+        type: "beer",
+        address: "610 W 6th Ave, Anchorage",
+        hours: "Mon–Thu 11am–12am · Fri–Sat 11am–1am · Sun 10am–12am",
+        tip: "Afternoon pit stop, not dinner destination. Let 49th State handle the meal.",
+      },
+    ],
+  },
+
+  // ── MAPS ──────────────────────────────────────────────────
+  {
+    id: "maps", label: "Maps", shortLabel: "MAPS", section: "maps",
+    title: "Port Maps", subtitle: "Pinned stops at every destination",
+    color: "#0369A1", bg: "#F0F9FF", border: "#BAE6FD", emoji: "🗺️",
+    items: [],
+  },
+];
+
+const sections = [
+  { id: "vancouver",  label: "Vancouver",      emoji: "🏙️", color: "#2D6A4F" },
+  { id: "dinners",    label: "Group Dinners",  emoji: "🍽️", color: "#9D174D" },
+  { id: "cruise",     label: "The Cruise",     emoji: "🚢", color: "#0F4C75" },
+  { id: "anchorage",  label: "Anchorage Day",  emoji: "🦅", color: "#B45309" },
+  { id: "breweries",  label: "Beer Guide",     emoji: "🍺", color: "#1D4ED8" },
+  { id: "maps",       label: "Maps",           emoji: "🗺️", color: "#0369A1" },
+];
+
+const typeStyles = {
+  logistics:  { bg: "#F3F4F6", text: "#374151", border: "#D1D5DB" },
+  coffee:     { bg: "#FEF3C7", text: "#92400E", border: "#FDE68A" },
+  sightseeing:{ bg: "#D1FAE5", text: "#065F46", border: "#6EE7B7" },
+  beer:       { bg: "#DBEAFE", text: "#1E40AF", border: "#93C5FD" },
+  dinner:     { bg: "#FEE2E2", text: "#991B1B", border: "#FCA5A5" },
+  food:       { bg: "#D1FAE5", text: "#065F46", border: "#6EE7B7" },
+  activity:   { bg: "#EDE9FE", text: "#4C1D95", border: "#C4B5FD" },
+  scenic:     { bg: "#ECFEFF", text: "#164E63", border: "#67E8F9" },
+  wildlife:   { bg: "#FEF9C3", text: "#713F12", border: "#FDE68A" },
+  onboard:    { bg: "#F5F3FF", text: "#4C1D95", border: "#DDD6FE" },
+  city:       { bg: "#F1F5F9", text: "#475569", border: "#CBD5E1" },
+};
+
+const typeLabels = {
+  logistics: "LOGISTICS", coffee: "COFFEE", sightseeing: "SIGHTSEEING",
+  beer: "CRAFT BEER", dinner: "DINNER", food: "FOOD", activity: "ACTIVITY",
+  scenic: "SCENIC CRUISING", wildlife: "WILDLIFE", onboard: "ON THE SHIP",
+  city: "PORT / CITY",
+};
+
+function App() {
+  useEffect(() => {
+    // Inject Google Fonts
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+    // Set page title
+    document.title = "Voyage of the Glaciers · Alaska 2025";
+  }, []);
+
+  const [activeSection, setActiveSection] = useState("vancouver");
+  const [activeDay, setActiveDay] = useState("thu");
+  const [expandedItem, setExpandedItem] = useState(null);
+
+  const visibleDays = allDays.filter((d) => d.section === activeSection);
+  const currentDay = allDays.find((d) => d.id === activeDay) || visibleDays[0];
+  const isDinnersOrSingleDay = activeSection === "dinners" || activeSection === "anchorage" || activeSection === "breweries" || activeSection === "maps";
+
+  const handleSectionChange = (sectionId) => {
+    setActiveSection(sectionId);
+    const firstDay = allDays.find((d) => d.section === sectionId);
+    setActiveDay(firstDay.id);
+    setExpandedItem(null);
+  };
+
+  const handleDayChange = (dayId) => {
+    setActiveDay(dayId);
+    setExpandedItem(null);
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#F8F7F4", fontFamily: "'Lora', Georgia, serif", color: "#1C1C1E" }}>
+
+      {/* ── HEADER ── */}
+      <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E7EB" }}>
+        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "28px 20px 0" }}>
+          <div style={{ fontSize: "10px", letterSpacing: "4px", color: "#9CA3AF", fontFamily: "'DM Mono', monospace", marginBottom: "6px" }}>
+            ALASKA 2025 · AUGUST 13–23
+          </div>
+          <h1 style={{ fontSize: "clamp(22px, 5vw, 36px)", fontWeight: "normal", margin: "0 0 3px", lineHeight: 1.1, color: "#111827" }}>
+            Voyage of the Glaciers
+          </h1>
+          <p style={{ fontSize: "12px", color: "#9CA3AF", margin: "0 0 20px", fontFamily: "'DM Mono', monospace" }}>
+            Vancouver → Ketchikan → Juneau → Skagway → Glacier Bay → Anchorage
+          </p>
+
+          {/* Section pills */}
+          <div style={{ display: "flex", gap: "6px", marginBottom: "0", flexWrap: "wrap" }}>
+            {sections.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => handleSectionChange(s.id)}
+                style={{
+                  padding: "7px 13px",
+                  background: activeSection === s.id ? s.color : "transparent",
+                  color: activeSection === s.id ? "#fff" : "#6B7280",
+                  border: `1px solid ${activeSection === s.id ? s.color : "#E5E7EB"}`,
+                  borderRadius: "20px", cursor: "pointer",
+                  fontFamily: "'DM Mono', monospace", fontSize: "10px", letterSpacing: "1px",
+                  fontWeight: activeSection === s.id ? "700" : "400",
+                  transition: "all 0.15s", whiteSpace: "nowrap",
+                }}
+              >
+                {s.emoji} {s.label.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          {/* Day tabs — hidden for single-day/no-tab sections */}
+          {!isDinnersOrSingleDay && (
+            <div style={{
+              display: "flex", overflowX: "auto", gap: "0",
+              marginTop: "16px", borderBottom: "2px solid #E5E7EB",
+              scrollbarWidth: "none", msOverflowStyle: "none",
+            }}>
+              {visibleDays.map((day) => {
+                const isActive = activeDay === day.id;
+                return (
+                  <button
+                    key={day.id}
+                    onClick={() => handleDayChange(day.id)}
+                    style={{
+                      flexShrink: 0, padding: "10px 12px", background: "transparent",
+                      color: isActive ? day.color : "#9CA3AF",
+                      border: "none",
+                      borderBottom: isActive ? `3px solid ${day.color}` : "3px solid transparent",
+                      marginBottom: "-2px", cursor: "pointer",
+                      fontFamily: "'DM Mono', monospace", fontSize: "10px", letterSpacing: "0.5px",
+                      transition: "all 0.15s", fontWeight: isActive ? "700" : "400",
+                      lineHeight: 1.5, whiteSpace: "nowrap", textAlign: "center",
+                    }}
+                  >
+                    <div style={{ fontSize: "14px", marginBottom: "2px" }}>{day.emoji}</div>
+                    <div>{day.label.split(" · ")[0]}</div>
+                    <div style={{ fontSize: "9px", opacity: 0.8 }}>{day.shortLabel}</div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {isDinnersOrSingleDay && <div style={{ height: "16px" }} />}
+        </div>
+      </div>
+
+      {/* ── BODY ── */}
+      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "20px 20px 48px" }}>
+
+        {/* Day banner with hero photo */}
+        <div style={{
+          border: `1px solid ${currentDay.border}`,
+          borderRadius: "12px", marginBottom: "14px",
+          overflow: "hidden",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+        }}>
+          {currentDay.photo && (
+            <div style={{
+              width: "100%", height: "160px", position: "relative", overflow: "hidden",
+            }}>
+              <img
+                src={currentDay.photo}
+                alt={currentDay.title}
+                style={{
+                  width: "100%", height: "100%", objectFit: "cover",
+                  display: "block",
+                }}
+                onError={(e) => { e.target.style.display = "none"; e.target.parentNode.style.display = "none"; }}
+              />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: `linear-gradient(to bottom, transparent 40%, ${currentDay.color}CC 100%)`,
+              }} />
+              <div style={{
+                position: "absolute", bottom: "12px", left: "16px", right: "16px",
+              }}>
+                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "rgba(255,255,255,0.8)", letterSpacing: "2px", fontWeight: "700", marginBottom: "2px" }}>
+                  {currentDay.label}
+                </div>
+                <div style={{ fontSize: "18px", color: "#fff", lineHeight: 1.2, fontFamily: "'Lora', Georgia, serif", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>
+                  {currentDay.title}
+                  <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "13px", fontStyle: "italic", marginLeft: "8px" }}>
+                    {currentDay.subtitle}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {!currentDay.photo && (
+            <div style={{
+              background: currentDay.bg, padding: "16px 20px",
+              display: "flex", alignItems: "center", gap: "12px",
+            }}>
+              <div style={{ fontSize: "28px" }}>{currentDay.emoji}</div>
+              <div>
+                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: currentDay.color, letterSpacing: "2px", fontWeight: "700", marginBottom: "2px" }}>
+                  {currentDay.label}
+                </div>
+                <div style={{ fontSize: "16px", color: "#111827", lineHeight: 1.2 }}>
+                  {currentDay.title}
+                  <span style={{ color: "#9CA3AF", fontSize: "13px", fontStyle: "italic", marginLeft: "8px" }}>
+                    {currentDay.subtitle}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Maps section */}
+        {activeSection === "maps" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+
+            {/* Vancouver map */}
+            <div style={{ background: "#FFFFFF", borderRadius: "12px", border: "1px solid #E5E7EB", overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+              <div style={{ padding: "14px 18px 10px", borderBottom: "1px solid #F3F4F6" }}>
+                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", letterSpacing: "2px", marginBottom: "3px" }}>AUG 13–15</div>
+                <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827" }}>🏙️ Vancouver, BC</div>
+                <div style={{ fontSize: "12px", color: "#6B7280", marginTop: "2px" }}>Coffee, breweries, dinners, cruise terminal — 11 pins</div>
+              </div>
+              <iframe
+                title="Vancouver Map"
+                width="100%"
+                height="400"
+                style={{ border: "none", display: "block" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
+              />
+              <div style={{ padding: "12px 18px", background: "#F8FAFF", borderTop: "1px solid #EFF6FF" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {[
+                    { name: "Nemesis Coffee", type: "coffee" },
+                    { name: "Strathcona Beer Co", type: "beer" },
+                    { name: "Revolver Coffee", type: "coffee" },
+                    { name: "Capilano Bridge", type: "sightseeing" },
+                    { name: "Granville Island", type: "food" },
+                    { name: "Brassneck Brewery", type: "beer" },
+                    { name: "L'Abattoir", type: "dinner" },
+                    { name: "Salmon n' Bannock", type: "dinner" },
+                    { name: "Flying Pig Gastown", type: "dinner" },
+                    { name: "Cactus Club Harbour", type: "dinner" },
+                    { name: "Canada Place Terminal", type: "logistics" },
+                  ].map((pin, i) => {
+                    const colors = { coffee: ["#FEF3C7","#92400E"], beer: ["#DBEAFE","#1E40AF"], sightseeing: ["#D1FAE5","#065F46"], food: ["#D1FAE5","#065F46"], dinner: ["#FEE2E2","#991B1B"], logistics: ["#F3F4F6","#374151"] };
+                    const [bg, text] = colors[pin.type] || colors.logistics;
+                    return (
+                      <span key={i} style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", padding: "3px 8px", background: bg, color: text, borderRadius: "4px", letterSpacing: "0.3px" }}>
+                        {pin.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Anchorage map */}
+            <div style={{ background: "#FFFFFF", borderRadius: "12px", border: "1px solid #E5E7EB", overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+              <div style={{ padding: "14px 18px 10px", borderBottom: "1px solid #F3F4F6" }}>
+                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", letterSpacing: "2px", marginBottom: "3px" }}>AUG 23</div>
+                <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827" }}>🦅 Anchorage, AK</div>
+                <div style={{ fontSize: "12px", color: "#6B7280", marginTop: "2px" }}>Breakfast through departure — 7 pins including ANC airport</div>
+              </div>
+              <iframe
+                title="Anchorage Map"
+                width="100%"
+                height="400"
+                style={{ border: "none", display: "block" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
+              />
+              <div style={{ padding: "12px 18px", background: "#FFFBEB", borderTop: "1px solid #FEF3C7" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {[
+                    { name: "Snow City Cafe", type: "coffee" },
+                    { name: "Anchorage Museum", type: "sightseeing" },
+                    { name: "Tony Knowles Trail", type: "sightseeing" },
+                    { name: "Humpy's Alehouse", type: "beer" },
+                    { name: "49th State Brewing", type: "beer" },
+                    { name: "Wildlife Conservation Ctr", type: "activity" },
+                    { name: "ANC Airport", type: "logistics" },
+                  ].map((pin, i) => {
+                    const colors = { coffee: ["#FEF3C7","#92400E"], beer: ["#DBEAFE","#1E40AF"], sightseeing: ["#D1FAE5","#065F46"], activity: ["#EDE9FE","#4C1D95"], logistics: ["#F3F4F6","#374151"] };
+                    const [bg, text] = colors[pin.type] || colors.logistics;
+                    return (
+                      <span key={i} style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", padding: "3px 8px", background: bg, color: text, borderRadius: "4px", letterSpacing: "0.3px" }}>
+                        {pin.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Cruise ports note */}
+            <div style={{ padding: "14px 18px", background: "#FFFFFF", borderRadius: "10px", border: "1px solid #E5E7EB", fontFamily: "'DM Mono', monospace", fontSize: "11px", color: "#6B7280", lineHeight: 1.8 }}>
+              <div style={{ color: "#0369A1", fontWeight: "700", letterSpacing: "2px", fontSize: "10px", marginBottom: "6px" }}>CRUISE PORT MAPS</div>
+              Ketchikan, Juneau, Skagway, Glacier Bay, and Whittier are all accessible via Google Maps once you're on the ground. Ships dock at the town pier — everything highlighted in the cruise days is walkable or a short rideshare from the ship.
+            </div>
+          </div>
+        )}
+
+        {/* Items */}
+        {activeSection !== "maps" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          {currentDay.items.map((item, idx) => {
+            const isExpanded = expandedItem === idx;
+            const ts = typeStyles[item.type] || typeStyles.logistics;
+
+            // City divider — non-interactive section header
+            if (item.type === "city") {
+              return (
+                <div key={idx} style={{
+                  display: "flex", alignItems: "center", gap: "10px",
+                  padding: "16px 4px 6px", marginTop: idx === 0 ? 0 : "8px",
+                }}>
+                  <div style={{ fontSize: "18px" }}>{item.emoji}</div>
+                  <div>
+                    <div style={{ fontSize: "13px", fontWeight: "700", color: "#111827", fontFamily: "'DM Mono', monospace", letterSpacing: "1px" }}>
+                      {item.title}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "1px" }}>{item.detail}</div>
+                  </div>
+                  <div style={{ flex: 1, height: "1px", background: "#E5E7EB", marginLeft: "8px" }} />
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={idx}
+                onClick={() => setExpandedItem(isExpanded ? null : idx)}
+                style={{
+                  background: "#FFFFFF",
+                  border: `1px solid ${isExpanded ? currentDay.border : "#E5E7EB"}`,
+                  borderRadius: "10px", padding: "14px 16px", cursor: "pointer",
+                  transition: "all 0.15s",
+                  boxShadow: isExpanded ? "0 2px 12px rgba(0,0,0,0.07)" : "0 1px 2px rgba(0,0,0,0.04)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "10px", color: "#9CA3AF", minWidth: "66px", paddingTop: "3px", flexShrink: 0 }}>
+                    {item.time}
+                  </div>
+                  <div style={{ fontSize: "16px", paddingTop: "1px", minWidth: "20px", flexShrink: 0 }}>{item.emoji}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "7px", flexWrap: "wrap", marginBottom: "4px" }}>
+                      <span style={{ fontSize: "14px", fontWeight: "600", color: "#111827" }}>{item.title}</span>
+                      <span style={{
+                        fontSize: "8px", fontFamily: "'DM Mono', monospace", letterSpacing: "1px",
+                        padding: "2px 6px", background: ts.bg, color: ts.text,
+                        borderRadius: "3px", border: `1px solid ${ts.border}`, flexShrink: 0,
+                      }}>{typeLabels[item.type]}</span>
+                    </div>
+                    <div style={{ fontSize: "12px", color: "#6B7280", lineHeight: 1.65 }}>{item.detail}</div>
+                    {isExpanded && (item.address || item.hours || item.tip) && (
+                      <div style={{
+                        marginTop: "10px", padding: "10px 14px",
+                        background: currentDay.bg, borderRadius: "7px",
+                        borderLeft: `3px solid ${currentDay.color}`,
+                      }}>
+                        {item.address && (
+                          <div style={{ display: "flex", gap: "10px", marginBottom: "5px" }}>
+                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", minWidth: "46px", paddingTop: "1px", flexShrink: 0 }}>WHERE</span>
+                            <span style={{ fontSize: "12px", color: "#374151" }}>{item.address}</span>
+                          </div>
+                        )}
+                        {item.hours && (
+                          <div style={{ display: "flex", gap: "10px", marginBottom: "5px" }}>
+                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", minWidth: "46px", paddingTop: "1px", flexShrink: 0 }}>HOURS</span>
+                            <span style={{ fontSize: "12px", color: "#374151" }}>{item.hours}</span>
+                          </div>
+                        )}
+                        {item.tip && (
+                          <div style={{
+                            display: "flex", gap: "10px",
+                            marginTop: item.address || item.hours ? "7px" : 0,
+                            paddingTop: item.address || item.hours ? "7px" : 0,
+                            borderTop: item.address || item.hours ? `1px solid ${currentDay.border}` : "none",
+                          }}>
+                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: currentDay.color, minWidth: "46px", paddingTop: "1px", fontWeight: "700", flexShrink: 0 }}>PRO TIP</span>
+                            <span style={{ fontSize: "12px", color: "#374151", lineHeight: 1.65 }}>{item.tip}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{
+                    color: "#D1D5DB", fontSize: "12px", paddingTop: "4px",
+                    transition: "transform 0.2s", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0,
+                  }}>↓</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        )}
+
+        {/* Contextual alerts */}
+        {activeDay === "thu" && (
+          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FFFBEB", borderRadius: "10px", border: "1px solid #FDE68A", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#92400E" }}>
+            ⏱ <strong>Customs heads-up:</strong> Budget 60–75 minutes from wheels down to outside the terminal with 6 people. Don't book anything tight for early afternoon.
+          </div>
+        )}
+        {activeDay === "fri" && (
+          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FEF2F2", borderRadius: "10px", border: "1px solid #FECACA", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#991B1B" }}>
+            🚨 <strong>L'Abattoir reminder:</strong> Closed Sunday. Tonight is your ONLY shot. If you're going, make that reservation before you close this app.
+          </div>
+        )}
+        {activeDay === "wed" && (
+          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#ECFDF5", borderRadius: "10px", border: "1px solid #6EE7B7", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#065F46" }}>
+            🚂 <strong>White Pass Railway: 2:15pm — confirmed.</strong> Sit on the LEFT side of the train for the best gorge views. Check in at the Broadway depot by ~1:45pm.
+          </div>
+        )}
+        {activeDay === "thu-glacier-bay" && (
+          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#ECFEFF", borderRadius: "10px", border: "1px solid #67E8F9", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#164E63" }}>
+            🧊 <strong>Set an alarm for sunrise.</strong> Glacier Bay in morning light is the kind of thing people fly to Alaska for. Don't sleep through it.
+          </div>
+        )}
+        {activeDay === "sat-anchorage" && (
+          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FFFBEB", borderRadius: "10px", border: "1px solid #FDE68A", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#92400E" }}>
+            🚇 <strong>Tunnel timing:</strong> The Whittier tunnel alternates directions on a roughly 30-min cycle. Your shuttle driver will know the schedule, but don't be surprised by a wait.
+          </div>
+        )}
+
+        {/* Route footer */}
+        <div style={{
+          marginTop: "24px", padding: "14px 18px", background: "#FFFFFF",
+          borderRadius: "10px", border: "1px solid #E5E7EB",
+          fontFamily: "'DM Mono', monospace", fontSize: "10px", color: "#9CA3AF",
+        }}>
+          <div style={{ marginBottom: "8px", color: "#6B7280", fontSize: "9px", letterSpacing: "2px" }}>FULL ROUTE</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", alignItems: "center" }}>
+            {[
+              { label: "Vancouver", dayId: "thu", section: "vancouver" },
+              { label: "→" },
+              { label: "Inside Passage", dayId: "sun", section: "cruise" },
+              { label: "→" },
+              { label: "Ketchikan", dayId: "mon", section: "cruise" },
+              { label: "→" },
+              { label: "Juneau", dayId: "tue", section: "cruise" },
+              { label: "→" },
+              { label: "Skagway", dayId: "wed", section: "cruise" },
+              { label: "→" },
+              { label: "Glacier Bay", dayId: "thu-glacier-bay", section: "cruise" },
+              { label: "→" },
+              { label: "College Fjord", dayId: "fri-college-fjord", section: "cruise" },
+              { label: "→" },
+              { label: "Anchorage", dayId: "sat-anchorage", section: "anchorage" },
+            ].map((stop, i) => {
+              const isCurrent = stop.dayId === activeDay || (activeSection === "anchorage" && stop.label === "Anchorage");
+              return (
+                <span
+                  key={i}
+                  onClick={() => {
+                    if (stop.dayId) {
+                      setActiveSection(stop.section);
+                      setActiveDay(stop.dayId);
+                      setExpandedItem(null);
+                    }
+                  }}
+                  style={{
+                    color: isCurrent ? "#111827" : stop.label === "→" ? "#E5E7EB" : "#9CA3AF",
+                    fontWeight: isCurrent ? "700" : "400",
+                    cursor: stop.dayId ? "pointer" : "default",
+                    fontSize: "10px",
+                    textDecoration: isCurrent ? "underline" : "none",
+                    textUnderlineOffset: "3px",
+                  }}
+                >
+                  {stop.label}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
