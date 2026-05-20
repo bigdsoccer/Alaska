@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Voyage of the Glaciers · Alaska 2025</title>
+  <title>Voyage of the Glaciers · Alaska 2026</title>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -11,14 +11,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; }
     body { background: #F8F7F4; }
-    /* Hide scrollbar on day tabs */
     .tab-scroll::-webkit-scrollbar { display: none; }
     .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { useState, useEffect } = React;
 
@@ -69,8 +67,8 @@ const allDays = [
 
   // ── GROUP DINNERS ──────────────────────────────────────────
   {
-    id: "dinners", label: "Group Dinners", shortLabel: "DINNERS", section: "dinners",
-    title: "Group Dinner Options", subtitle: "Something for everyone at the table",
+    id: "dinners", label: "Places to Eat", shortLabel: "EAT", section: "dinners",
+    title: "Places to Eat", subtitle: "Vancouver · Ketchikan · Juneau · Skagway · Anchorage",
     photo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&auto=format&fit=crop&q=80",
     color: "#9D174D", bg: "#FFF1F2", border: "#FECDD3", emoji: "🍽️",
     items: [
@@ -78,12 +76,40 @@ const allDays = [
       { time: "OPTION 2", emoji: "🍔", title: "The Flying Pig — Gastown", detail: "102 Water St. Canadian comfort food done well — elevated pub fare with great burgers, mussels, poutine. Spacious enough for 6, right in Gastown, and nobody gets stranded on the menu. Good casual Thursday option.", type: "dinner", address: "102 Water St", hours: "Check current hours", tip: "Low-key, great neighborhood, everyone finds something. Perfect warm-up before Friday's splurge." },
       { time: "OPTION 3", emoji: "🥩", title: "Cactus Club — Coal Harbour", detail: "1085 Canada Place. Waterfront views of the harbor and Stanley Park. Impressive menu (mushroom striploin, Creole spinach dip, fresh Pacific salmon) without anything intimidating. The crab dip is legitimately one of the best things in the city.", type: "dinner", address: "1085 Canada Pl", hours: "Daily 11am–midnight", tip: "Best for Friday night if the group wants views and atmosphere. Walk to Canada Place after — you're already there for Saturday's boarding." },
       { time: "BONUS", emoji: "⭐", title: "L'Abattoir — For You & Becca", detail: "217 Carrall St, Gastown. Michelin-recommended. The tartare and baked oysters are non-negotiable. Works great as a split — parents at Flying Pig or Cactus Club, you two at L'Abattoir. Or go as a full group if everyone's up for it.", type: "dinner", address: "217 Carrall St", hours: "Tue–Sat 5pm–11pm · CLOSED MON & SUN", tip: "🚨 CLOSED SUNDAYS. Friday is your ONLY night. Make a reservation before you close this tab." },
+
+      // ── KETCHIKAN ──
+      { time: "KETCHIKAN", emoji: "🎣", title: "Ketchikan Eats", detail: "6am–2pm port window. Eight hours on the ground — hit the food hard and early. Some of the freshest seafood on the entire trip.", type: "city" },
+      { time: "Top Pick", emoji: "🐟", title: "Alaska Fish House", detail: "Dock views, fast service, and the smoked salmon chowder is what people specifically fly back to Ketchikan for. The blackened fish taco hits equally hard. Reviewers describe it as 'borderline spiritual.' Great for a group.", type: "food", tip: "Perfect post-brewery stop. Get the chowder even if you're not that hungry. You'll thank yourself." },
+      { time: "Top Pick", emoji: "🦀", title: "Alaska King Crab Co.", detail: "If you came to Alaska for king crab — and you did — this is the place. Buckets of legs, award-winning bisque, and a bell that rings every time someone orders. Touristy? Yes. Worth it? Absolutely.", type: "food", tip: "Lines move fast. Go early before the full cruise crowd descends." },
+      { time: "Local Gem", emoji: "🍔", title: "Burger Queen", detail: "Don't let the name fool you — a beloved local hole-in-the-wall that embarrasses the chain it's named after. House-made burgers, Polish hot dogs, haddock and chips. Locals' favorite, genuinely excellent.", type: "food", tip: "Order from your table at the adjacent Asylum bar. Beer + burger at 10am in Ketchikan is culturally acceptable." },
+      { time: "Early Stop", emoji: "☕", title: "Island Brew Cafe", detail: "Local breakfast and coffee spot known for serious baking. The Lumberjack breakfast burrito, pesto rolls, and Buckeye cookies are the standouts. Good first stop off the ship before anything else.", type: "coffee", tip: "Opens early — ideal 6am first move right off the gangway." },
+
+      // ── JUNEAU ──
+      { time: "JUNEAU", emoji: "🏔️", title: "Juneau Eats", detail: "8am–9:15pm — your longest food window of the trip. 13+ hours to eat across breakfast, lunch, and a proper dinner before the late-night brewery stops.", type: "city" },
+      { time: "Must Do", emoji: "🦀", title: "Tracy's King Crab Shack", detail: "Steps from the cruise pier and one of the most talked-about food stops on any Alaska cruise. King crab legs, award-winning bisque, Dungeness crab. Yes it's $85/lb and yes people say it's worth every cent. The Whittier St location has shorter lines.", type: "food", address: "406 S Franklin St (pier) · 300 Whittier St (less crowded)", tip: "Go to the Whittier St location if the pier spot has a long line. Same crab, fraction of the wait." },
+      { time: "Top Pick", emoji: "🍺", title: "The Hangar on the Wharf", detail: "A converted floatplane hangar on the water with Gastineau Channel views. Halibut and chips, chowder in a sourdough bowl, king crab legs, 125+ beers. Big enough for the whole group, extensive menu, full bar.", type: "food", address: "2 Marine Way", tip: "Great full-group dinner option. Book ahead for evening during the More Ashore stay." },
+      { time: "Local Fave", emoji: "🥐", title: "Rookery Cafe", detail: "Where Juneau locals actually eat. Locally sourced seasonal ingredients, outstanding burgers, mac and cheese, beet salad with whipped goat cheese. Open breakfast through dinner. Refreshingly un-touristy.", type: "food", address: "111 Seward St", tip: "Best lunch option if you want to eat like a local instead of a cruise passenger." },
+      { time: "Cult Fave", emoji: "🥟", title: "Pel'meni", detail: "Russian dumplings, sour cream, hot sauce, butter. That's basically the entire menu and it doesn't need to be anything else. Cash only, tiny, perfect. Late-night local staple.", type: "food", tip: "Open late — ideal post-Alaskan Brewing stop. One of those places you'll talk about for years." },
+      { time: "Splurge", emoji: "⭐", title: "SALT", detail: "Juneau's most ambitious restaurant. Innovative Alaska-sourced dishes that redefine what 'Alaskan food' means. The kind of dinner worth planning your evening around.", type: "dinner", tip: "Best for dinner during the More Ashore extended stay. Reservations strongly recommended." },
+
+      // ── SKAGWAY ──
+      { time: "SKAGWAY", emoji: "🚂", title: "Skagway Eats", detail: "6:30am–8:30pm — 14 hours in port. Eat well around the 2:15pm railway. Downtown is tiny and walkable; everything good is within 5 minutes of the pier.", type: "city" },
+      { time: "Top Pick", emoji: "🐟", title: "Skagway Fish Company", detail: "The best fish and chips in Skagway — reviewers say they're permanently ruined for fish and chips anywhere else. Fresh halibut, king crab legs, Hump Island oysters, clam chowder. Covered outdoor picnic seating with space heaters.", type: "food", tip: "Perfect pre or post-railway lunch. 7-min walk from the pier. The halibut fish and chips are the move." },
+      { time: "Hidden Gem", emoji: "🌮", title: "Peppers Street Fusion", detail: "A converted school bus food truck serving what might be the best street corn you'll eat in Alaska. Chorizo, fresh ingredients, made to order. Sounds weird. Tastes incredible.", type: "food", tip: "Cash-friendly and genuinely great. The street corn alone is worth tracking it down." },
+      { time: "Dinner", emoji: "🍕", title: "The Station Bar & Grill", detail: "Year-round local favorite right in the heart of town. Burgers, pizza, calzones, prime rib, and beer-battered Alaskan white cod. Good post-railway dinner when you're back by 5pm.", type: "food", tip: "Good call if Skagway Fish Co. is packed post-railway. More seating, reliable food, full bar." },
+      { time: "Breakfast", emoji: "☕", title: "Sweet Tooth Cafe", detail: "Beloved breakfast spot in the historic district. Hot coffee, hearty breakfast plates, gold rush memorabilia. Perfect early morning stop right off the ship at 6:30am.", type: "coffee", tip: "First stop off the ship. Fuels you up before totem poles, brewery, and the railway." },
+
+      // ── ANCHORAGE ──
+      { time: "ANCHORAGE", emoji: "🦅", title: "Anchorage Eats", detail: "Full day Aug 22 before midnight flight. Breakfast through dinner — use every hour.", type: "city" },
+      { time: "Breakfast", emoji: "☕", title: "Snow City Cafe", detail: "The definitive Anchorage breakfast. Smoked salmon Benedict, crab cake Benedict, legendary cinnamon rolls. 4.5 stars, 4,100+ reviews. First stop off the shuttle from Whittier.", type: "food", address: "1034 W 4th Ave", hours: "Daily 7am–3pm", tip: "Put your name in when you arrive. The cinnamon rolls are as good as advertised." },
+      { time: "Dinner", emoji: "🍺", title: "49th State Brewing", detail: "Best brewpub in Anchorage. King crab grilled cheese, elk burger, yak burger, halibut tacos. 4.6 stars, 11,000+ reviews. Your last Alaskan meal — make it count.", type: "food", address: "717 W 3rd Ave", hours: "Daily 11am–11pm", tip: "Reservation for 6 on a Saturday night. Do not wing this." },
+      { time: "Afternoon", emoji: "🍻", title: "Humpy's Great Alaskan Alehouse", detail: "50+ taps, salmon chowder fries, halibut tacos. More bar than restaurant but the food is solid. Good afternoon stop between the Anchorage Museum and dinner at 49th State.", type: "food", address: "610 W 6th Ave", tip: "Afternoon drinks and snacks only — let 49th State handle the full dinner." },
     ],
   },
 
   // ── CRUISE ─────────────────────────────────────────────────
   {
-    id: "sun", label: "Sun · Aug 17", shortLabel: "AUG 17", section: "cruise",
+    id: "sun", label: "Sun · Aug 16", shortLabel: "AUG 16", section: "cruise",
     title: "Day at Sea", subtitle: "Inside Passage",
     photo: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&auto=format&fit=crop&q=80",
     color: "#0F4C75", bg: "#E8F4FD", border: "#93C5FD", emoji: "🌊",
@@ -94,26 +120,26 @@ const allDays = [
     ],
   },
   {
-    id: "mon", label: "Mon · Aug 18", shortLabel: "AUG 18", section: "cruise",
+    id: "mon", label: "Mon · Aug 17", shortLabel: "AUG 17", section: "cruise",
     title: "Ketchikan", subtitle: "Salmon Capital of the World",
     photo: "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=1200&auto=format&fit=crop&q=80",
     color: "#065F46", bg: "#ECFDF5", border: "#6EE7B7", emoji: "🎣",
     items: [
-      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Ships dock right downtown — nearly everything walkable from the pier. Compact, colorful, genuinely fun. August = active salmon run in the creek.", type: "logistics", tip: "Know your all-aboard time. Missing the ship somewhere with no roads out is a very expensive adventure." },
-      { time: "Morning", emoji: "🪵", title: "Totem Pole Heritage Center", detail: "One of the world's largest collections of standing totem poles. Tlingit, Haida, and Tsimshian tribal art. Guided tours worth it for context.", type: "sightseeing", tip: "Also check Saxman Native Village 2.5 miles south — larger outdoor collection with carvers working live." },
-      { time: "Morning", emoji: "☕", title: "Baleen Brewing", detail: "Small local brewery punching above its weight. A pint before noon in Alaska is culturally appropriate.", type: "beer", tip: "Go early before cruise ship crowds pack it." },
-      { time: "Midday", emoji: "🦅", title: "Creek Street Boardwalk", detail: "Historic wooden boardwalk over Ketchikan Creek. Boutiques, galleries, Dolly's House museum. Salmon fighting upstream are visible right from the boardwalk in August.", type: "sightseeing", tip: "The August salmon run is wild — fish jumping inches from you." },
-      { time: "Afternoon", emoji: "🥃", title: "Uncharted Alaska Distillery", detail: "Local craft spirits. Worth a stop before heading back.", type: "beer", tip: "Small operation — bring a card." },
-      { time: "Evening", emoji: "🚢", title: "Back Aboard + Sailaway", detail: "The scenery leaving Ketchikan through the channel is spectacular. Get a drink and get on deck.", type: "logistics" },
+      { time: "Port Day", emoji: "📍", title: "Port Overview · 6am–2pm", detail: "Short window — 8 hours on the ground. Ships dock right downtown, everything is walkable. Early start means you beat the crowds, but the 2pm all-aboard is firm. Plan accordingly.", type: "logistics", tip: "All-aboard is 2pm sharp. This is the tightest port day of the trip — don't dawdle." },
+      { time: "~7:30 AM", emoji: "🪵", title: "Totem Pole Heritage Center", detail: "One of the world's largest collections of standing totem poles. Tlingit, Haida, and Tsimshian tribal art. Guided tours worth it for context. Hit this first thing — you're off the ship at 6am and it opens early.", type: "sightseeing", tip: "Also check Saxman Native Village 2.5 miles south — larger outdoor collection with carvers working live." },
+      { time: "~9:00 AM", emoji: "☕", title: "Baleen Brewing", detail: "Small local brewery punching above its weight. Yes, a pint at 9am in Alaska is culturally appropriate — you're off the ship by 6am, you've earned it.", type: "beer", tip: "Go early before cruise ship crowds pack it. Small space fills up fast." },
+      { time: "~10:30 AM", emoji: "🦅", title: "Creek Street Boardwalk", detail: "Historic wooden boardwalk over Ketchikan Creek. Boutiques, galleries, Dolly's House museum. Salmon fighting upstream are visible right from the boardwalk in August.", type: "sightseeing", tip: "The August salmon run is wild — fish jumping inches from you." },
+      { time: "~12:00 PM", emoji: "🥃", title: "Uncharted Alaska Distillery", detail: "Local craft spirits. Last stop before heading back to the ship — worth a quick tasting if time allows.", type: "beer", tip: "Keep an eye on the clock. All-aboard at 2pm means you want to be walking back by 1:30pm." },
+      { time: "2:00 PM", emoji: "🚢", title: "All Aboard · Sailaway", detail: "All-aboard is 2pm — the ship departs shortly after. The scenery leaving Ketchikan through the channel is spectacular. Get a drink and get on deck.", type: "logistics", tip: "Early port day means you'll be back on the ship by early afternoon. Use the rest of the day to decompress and explore the ship." },
     ],
   },
   {
-    id: "tue", label: "Tue · Aug 19", shortLabel: "AUG 19", section: "cruise",
+    id: "tue", label: "Tue · Aug 18", shortLabel: "AUG 18", section: "cruise",
     title: "Juneau", subtitle: "Alaska's Capital · More Ashore Late Night",
     photo: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=80",
     color: "#1E3A5F", bg: "#EFF6FF", border: "#93C5FD", emoji: "🏔️",
     items: [
-      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Princess's 'More Ashore' late-night stay means the ship is docked well into the evening. Biggest port day. Use every hour.", type: "logistics", tip: "Juneau has zero roads connecting it to the rest of North America. Genuinely remote despite being the state capital." },
+      { time: "Port Day", emoji: "📍", title: "Port Overview · 8am–9:15pm", detail: "Princess's More Ashore program — over 13 hours on the ground. By far the biggest port day of the trip. Use every hour of it.", type: "logistics", tip: "Juneau has zero roads connecting it to the rest of North America. Genuinely remote despite being the state capital." },
       { time: "Morning", emoji: "☕", title: "Heritage Coffee", detail: "Local Juneau institution. Proper espresso before anything else. Multiple locations — downtown is most convenient from the pier.", type: "coffee", tip: "Get here first. Everything else builds from here." },
       { time: "Morning", emoji: "🧊", title: "Mendenhall Glacier", detail: "A tidewater glacier accessible from town — which is absurd and amazing. Helicopter glacier walks available. Even the visitor center overlook is jaw-dropping. Bucket-list item.", type: "sightseeing", tip: "Book a helicopter glacier walk. Spendy but 'I walked on a glacier' is a forever story." },
       { time: "Afternoon", emoji: "🐳", title: "Whale Watching", detail: "Juneau's waters are among the most reliable in Alaska for humpbacks. Multiple operators do 3-4 hour tours. Book independently — usually cheaper than ship excursions.", type: "activity", tip: "Gastineau Excursions and Allen Marine Tours are well-rated. Book ahead." },
@@ -122,12 +148,12 @@ const allDays = [
     ],
   },
   {
-    id: "wed", label: "Wed · Aug 20", shortLabel: "AUG 20", section: "cruise",
+    id: "wed", label: "Wed · Aug 19", shortLabel: "AUG 19", section: "cruise",
     title: "Skagway", subtitle: "Gateway to the Klondike Gold Rush",
     photo: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1200&auto=format&fit=crop&q=80",
     color: "#7C3A00", bg: "#FFF7ED", border: "#FCD34D", emoji: "🚂",
     items: [
-      { time: "Port Day", emoji: "📍", title: "Port Overview", detail: "Under 1,000 residents, one of Alaska's most dramatic histories. Nestled at the end of a fjord surrounded by mountains. The whole downtown is a National Historic Park.", type: "logistics", tip: "Everything is walkable from the pier. Broadway Street is the main drag." },
+      { time: "Port Day", emoji: "📍", title: "Port Overview · 6:30am–8:30pm", detail: "14 hours in port — plenty of time for the railway, the historic park, and a post-train beer. Skagway is tiny, walkable, and packs a lot in.", type: "logistics", tip: "Everything is walkable from the pier. Broadway Street is the main drag." },
       { time: "Morning", emoji: "☕", title: "Skagway Brewing Company", detail: "Right on Broadway — first stop off the ship. Grab a Spruce Tip Ale and some food. You have a relaxed morning before the 2:15pm railway departure, so use it.", address: "7th & Broadway", type: "beer", tip: "Spruce Tip Ale is made with locally harvested spruce tips. Not getting that in Dallas." },
       { time: "Morning", emoji: "🪙", title: "Klondike Gold Rush National Historic Park", detail: "Free to enter — the whole historic downtown is the park. Ranger-led walking tours run in the morning and are excellent. Perfect way to fill the hours before the railway and get the full gold rush context before you ride through it.", type: "sightseeing", tip: "Morning ranger tours are less crowded. Check the visitor center schedule when you arrive." },
       { time: "~1:45 PM", emoji: "🎟️", title: "Head to the Depot", detail: "White Pass & Yukon Route depot is right on Broadway near the pier — hard to miss. Check in 30 minutes before departure. Confirm your tickets and get your car assignment.", type: "logistics", tip: "Sit on the LEFT side of the train heading out of Skagway for the best views of the gorge and Dead Horse Gulch." },
@@ -136,12 +162,12 @@ const allDays = [
     ],
   },
   {
-    id: "thu-glacier-bay", label: "Thu · Aug 21", shortLabel: "AUG 21", section: "cruise",
+    id: "thu-glacier-bay", label: "Thu · Aug 20", shortLabel: "AUG 20", section: "cruise",
     title: "Glacier Bay", subtitle: "National Park · Full Day Scenic Cruising",
     photo: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&auto=format&fit=crop&q=80",
     color: "#164E63", bg: "#ECFEFF", border: "#67E8F9", emoji: "🧊",
     items: [
-      { time: "All Day", emoji: "🧊", title: "Glacier Bay National Park", detail: "UNESCO World Heritage Site. The ship spends the entire day cruising 65 miles into the bay. Margerie Glacier calves massive chunks of ice with a boom you feel in your chest.", type: "scenic", tip: "GET UP EARLY. Morning light and wildlife are why people fly to Alaska. Set an alarm." },
+      { time: "6:15am–3:15pm", emoji: "🧊", title: "Glacier Bay National Park", detail: "UNESCO World Heritage Site. The ship cruises 65 miles into the bay from early morning through early afternoon. Margerie Glacier calves massive chunks of ice with a boom you feel in your chest.", type: "scenic", tip: "GET UP EARLY — you enter the bay at 6:15am. Morning light and wildlife are why people fly to Alaska. Set an alarm." },
       { time: "Morning", emoji: "🎙️", title: "Park Ranger Narration", detail: "A National Park Service ranger boards the ship and narrates live — geology, glacial history, wildlife. Genuinely excellent.", type: "onboard", tip: "Check the Princess app for where the ranger will be presenting from." },
       { time: "All Day", emoji: "🐋", title: "Wildlife: The Full Card", detail: "Humpback whales, orcas, harbor seals on ice floes, brown bears on the coastline, bald eagles, mountain goats. Binoculars mandatory.", type: "wildlife", tip: "Dress in full layers. Colder than you expect this deep into the bay even in August." },
       { time: "Afternoon", emoji: "🏔️", title: "Johns Hopkins Inlet", detail: "If conditions allow, the ship may navigate into this rarely visited inlet — cascading waterfalls, snow-capped peaks, jaw-dropping.", type: "scenic", tip: "Captain's discretion based on ice conditions. Cross your fingers." },
@@ -149,12 +175,12 @@ const allDays = [
     ],
   },
   {
-    id: "fri-college-fjord", label: "Fri · Aug 22", shortLabel: "AUG 22", section: "cruise",
+    id: "fri-college-fjord", label: "Fri · Aug 21", shortLabel: "AUG 21", section: "cruise",
     title: "College Fjord → Whittier", subtitle: "Final Scenic Day · Disembark",
     photo: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&auto=format&fit=crop&q=80",
     color: "#312E81", bg: "#EEF2FF", border: "#A5B4FC", emoji: "⚓",
     items: [
-      { time: "Morning/Eve", emoji: "🧊", title: "College Fjord Scenic Cruising", detail: "Prince William Sound. 16 glaciers named after Ivy League colleges. Harvard Glacier dominates the end of the fjord and is actively advancing while most glaciers retreat. You'll hear it calve.", type: "scenic", tip: "Northbound typically does College Fjord in the evening — verify against your ship's schedule." },
+      { time: "Morn6:00pm–8:30pm", emoji: "🧊", title: "College Fjord Scenic Cruising", detail: "Prince William Sound. 16 glaciers named after Ivy League colleges. Harvard Glacier dominates the end of the fjord and is actively advancing while most glaciers retreat. You'll hear it calve.", type: "scenic", tip: "Northbound typically does College Fjord in the evening — verify against your ship's schedule." },
       { time: "All Day", emoji: "🦦", title: "Wildlife: Prince William Sound", detail: "Sea otters floating on their backs wrapped in kelp, harbor seals on ice chunks, Dall's porpoises, humpbacks. Peak Alaska.", type: "wildlife", tip: "Sea otters wrapped in kelp = peak Alaska group chat content." },
       { time: "Evening", emoji: "🥂", title: "Last Night on the Ship", detail: "Pack bags tonight. Set luggage outside by midnight if using Princess's service. Last dinner, last drinks, last Alaskan water views from a deck. Make it count.", type: "onboard", tip: "Don't over-drink. You have a full Anchorage day tomorrow and a midnight flight. Future you will thank you." },
     ],
@@ -162,7 +188,7 @@ const allDays = [
 
   // ── ANCHORAGE DAY ──────────────────────────────────────────
   {
-    id: "sat-anchorage", label: "Sat · Aug 23", shortLabel: "AUG 23", section: "anchorage",
+    id: "sat-anchorage", label: "Sat · Aug 22", shortLabel: "AUG 22", section: "anchorage",
     title: "Anchorage Day", subtitle: "Disembark → Full Day → Midnight Flight",
     photo: "https://images.unsplash.com/photo-1474524955719-b9f87c50ce47?w=1200&auto=format&fit=crop&q=80",
     color: "#B45309", bg: "#FFFBEB", border: "#FDE68A", emoji: "🦅",
@@ -405,7 +431,7 @@ const allDays = [
 
 const sections = [
   { id: "vancouver",  label: "Vancouver",      emoji: "🏙️", color: "#2D6A4F" },
-  { id: "dinners",    label: "Group Dinners",  emoji: "🍽️", color: "#9D174D" },
+  { id: "dinners",    label: "Places to Eat",  emoji: "🍽️", color: "#9D174D" },
   { id: "cruise",     label: "The Cruise",     emoji: "🚢", color: "#0F4C75" },
   { id: "anchorage",  label: "Anchorage Day",  emoji: "🦅", color: "#B45309" },
   { id: "breweries",  label: "Beer Guide",     emoji: "🍺", color: "#1D4ED8" },
@@ -471,7 +497,7 @@ function App() {
       <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E7EB" }}>
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "28px 20px 0" }}>
           <div style={{ fontSize: "10px", letterSpacing: "4px", color: "#9CA3AF", fontFamily: "'DM Mono', monospace", marginBottom: "6px" }}>
-            ALASKA 2025 · AUGUST 13–23
+            ALASKA 2026 · AUGUST 13–22
           </div>
           <h1 style={{ fontSize: "clamp(22px, 5vw, 36px)", fontWeight: "normal", margin: "0 0 3px", lineHeight: 1.1, color: "#111827" }}>
             Voyage of the Glaciers
@@ -810,7 +836,7 @@ function App() {
         )}
         {activeDay === "thu-glacier-bay" && (
           <div style={{ marginTop: "16px", padding: "12px 18px", background: "#ECFEFF", borderRadius: "10px", border: "1px solid #67E8F9", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#164E63" }}>
-            🧊 <strong>Set an alarm for sunrise.</strong> Glacier Bay in morning light is the kind of thing people fly to Alaska for. Don't sleep through it.
+            🧊 <strong>The ship enters Glacier Bay at 6:15am.</strong> Set an alarm. This is the whole reason you came to Alaska — do not sleep through it.
           </div>
         )}
         {activeDay === "sat-anchorage" && (
