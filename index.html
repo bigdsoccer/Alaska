@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="googlebot" content="noindex, nofollow" />
-  <title>Voyage of the Glaciers · Alaska 2026</title>
+  <title>Voyage of the Glaciers · Alaska 2025</title>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; }
-    body { background: #FAF7F2; }
-    div::-webkit-scrollbar { display: none; }
+    body { background: #F8F7F4; }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
@@ -205,17 +204,25 @@ const allDays = [
     color: "#B45309", bg: "#FFFBEB", border: "#FDE68A", emoji: "🦅",
     items: [
       {
-        time: "Morning",
+        time: "~8:30 AM",
         emoji: "🚢",
         title: "Disembark Whittier",
-        detail: "Whittier is a tiny port — most of the permanent residents live in a single building called Begich Towers. Truly. Your pre-booked shuttle picks up at the terminal and heads north to Anchorage, about 60 miles.",
+        detail: "Whittier is a tiny port — most of the permanent residents live in a single building called Begich Towers. Truly. Get off the ship, collect your bags, and find your shuttle pickup at the terminal.",
         type: "logistics",
-        tip: "The Anton Anderson Memorial Tunnel out of Whittier is a one-lane, alternating-direction tunnel shared by cars and trains. There can be a wait of up to 30 minutes depending on timing. Factor that into your shuttle's schedule.",
+        tip: "The Anton Anderson Memorial Tunnel out of Whittier is one-lane and alternates direction on a ~30-min cycle. Your shuttle driver knows the schedule — just don't wander off before 9:45.",
       },
       {
-        time: "~10:00 AM",
+        time: "9:45 AM",
+        emoji: "🚌",
+        title: "Shuttle to Anchorage",
+        detail: "Your booked 9:45am shuttle heads north — about 60 miles, roughly 1.5 hours depending on tunnel timing. Dropped at or near the airport area, then Uber or rental car to get around the city for the day.",
+        type: "logistics",
+        tip: "Renting? Budget, Hertz, Alamo, and Enterprise all operate at ANC airport — book in advance. Ubering all day also works fine since downtown Anchorage is compact.",
+      },
+      {
+        time: "~11:30 AM",
         emoji: "☕",
-        title: "Snow City Cafe — Breakfast",
+        title: "Snow City Cafe — Late Breakfast",
         detail: "1034 W 4th Ave. The quintessential Anchorage breakfast spot. 4.5 stars, 4,100+ reviews. Smoked salmon Benedict, crab cake Benedict, cinnamon buns that people dream about. This is your first real sit-down meal off the ship — earn it.",
         type: "coffee",
         address: "1034 W 4th Ave",
@@ -652,7 +659,7 @@ function App() {
               </div>
               <iframe title="Vancouver Map" width="100%" height="380"
                 style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
               />
               <div style={{ padding:"12px 18px", background: T.paper2 }}>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
@@ -671,7 +678,7 @@ function App() {
               </div>
               <iframe title="Anchorage Map" width="100%" height="380"
                 style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
               />
               <div style={{ padding:"12px 18px", background: T.paper2 }}>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
@@ -824,7 +831,7 @@ function App() {
         )}
         {activeSection === "anchorage" && (
           <div style={{ marginTop:20, padding:"12px 18px", background: T.amberTint, borderRadius:6, border:`1px solid ${T.amber}`, ...fi, fontSize:12, color: T.ink }}>
-            🚇 <strong>Tunnel timing:</strong> The Whittier tunnel alternates directions on a roughly 30-min cycle. Your shuttle driver will know — just don't be surprised by a wait.
+            🚌 <strong>Shuttle confirmed: 9:45am from Whittier.</strong> Arrives Anchorage ~11:15–11:30am. Uber or rental car from there — you've got a solid day before the midnight flight.
           </div>
         )}
 
