@@ -12,9 +12,8 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; }
-    body { background: #F8F7F4; }
-    .tab-scroll::-webkit-scrollbar { display: none; }
-    .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    body { background: #FAF7F2; }
+    div::-webkit-scrollbar { display: none; }
   </style>
 </head>
 <body>
@@ -442,472 +441,433 @@ const allDays = [
 ];
 
 const sections = [
-  { id: "vancouver",  label: "Vancouver",      emoji: "🏙️", color: "#2D6A4F" },
-  { id: "dinners",    label: "Places to Eat",  emoji: "🍽️", color: "#9D174D" },
-  { id: "cruise",     label: "The Cruise",     emoji: "🚢", color: "#0F4C75" },
-  { id: "anchorage",  label: "Anchorage Day",  emoji: "🦅", color: "#B45309" },
-  { id: "breweries",  label: "Beer Guide",     emoji: "🍺", color: "#1D4ED8" },
+  { id: "vancouver",  label: "Vancouver",      emoji: "🏙️", color: "#2C6E49" },
+  { id: "dinners",    label: "Places to Eat",  emoji: "🍽️", color: "#8B3A2A" },
+  { id: "cruise",     label: "The Cruise",     emoji: "🚢", color: "#1A5C73" },
+  { id: "anchorage",  label: "Anchorage Day",  emoji: "🦅", color: "#7C4A00" },
+  { id: "breweries",  label: "Beer Guide",     emoji: "🍺", color: "#3A5A8A" },
   { id: "maps",       label: "Maps",           emoji: "🗺️", color: "#0369A1" },
 ];
 
-const typeStyles = {
-  logistics:  { bg: "#F3F4F6", text: "#374151", border: "#D1D5DB" },
-  coffee:     { bg: "#FEF3C7", text: "#92400E", border: "#FDE68A" },
-  sightseeing:{ bg: "#D1FAE5", text: "#065F46", border: "#6EE7B7" },
-  beer:       { bg: "#DBEAFE", text: "#1E40AF", border: "#93C5FD" },
-  dinner:     { bg: "#FEE2E2", text: "#991B1B", border: "#FCA5A5" },
-  food:       { bg: "#D1FAE5", text: "#065F46", border: "#6EE7B7" },
-  activity:   { bg: "#EDE9FE", text: "#4C1D95", border: "#C4B5FD" },
-  scenic:     { bg: "#ECFEFF", text: "#164E63", border: "#67E8F9" },
-  wildlife:   { bg: "#FEF9C3", text: "#713F12", border: "#FDE68A" },
-  onboard:    { bg: "#F5F3FF", text: "#4C1D95", border: "#DDD6FE" },
-  city:       { bg: "#F1F5F9", text: "#475569", border: "#CBD5E1" },
+// ── DESIGN TOKENS ─────────────────────────────────────────────────────────────
+const T = {
+  paper:      "#FAF7F2",
+  paper2:     "#F2EDE4",
+  paper3:     "#EAE3D8",
+  ink:        "#1C1811",
+  inkSoft:    "#6B5F50",
+  inkFaint:   "#A89880",
+  glacier:    "#2C8FA3",
+  glacierDeep:"#1A5C73",
+  glacierTint:"rgba(44,143,163,0.10)",
+  rust:       "#8B3A2A",
+  rustTint:   "rgba(139,58,42,0.09)",
+  moss:       "#4A6741",
+  mossTint:   "rgba(74,103,65,0.09)",
+  amber:      "#C47C1A",
+  amberTint:  "rgba(196,124,26,0.10)",
+  rule:       "#DDD5C8",
+  shadow:     "rgba(28,24,17,0.08)",
 };
 
-const typeLabels = {
-  logistics: "LOGISTICS", coffee: "COFFEE", sightseeing: "SIGHTSEEING",
-  beer: "CRAFT BEER", dinner: "DINNER", food: "FOOD", activity: "ACTIVITY",
-  scenic: "SCENIC CRUISING", wildlife: "WILDLIFE", onboard: "ON THE SHIP",
-  city: "PORT / CITY",
+// ── PIN BADGE STYLES ──────────────────────────────────────────────────────────
+const PIN = {
+  logistics: { bg:"#E8E2D8", text:"#5A5044" },
+  coffee:    { bg:"#EBD9B4", text:"#7A5418" },
+  sightseeing:{ bg:"#C8DDD8", text:"#1C4A57" },
+  beer:      { bg:"#D8C8A8", text:"#6B4A18" },
+  dinner:    { bg:"#E8C8BC", text:"#7A2E1E" },
+  food:      { bg:"#E8C8BC", text:"#7A2E1E" },
+  activity:  { bg:"#D0CCB8", text:"#4A5230" },
+  scenic:    { bg:"#BFD3D6", text:"#1C4A57" },
+  wildlife:  { bg:"#D4DEAD", text:"#3D5220" },
+  onboard:   { bg:"#D8CCE8", text:"#3A2870" },
+  city:      { bg:"#E0D8CC", text:"#5A5044" },
+};
+
+const PIN_LABELS = {
+  logistics:"LOGISTICS", coffee:"COFFEE", sightseeing:"SIGHTSEEING",
+  beer:"CRAFT BEER", dinner:"DINNER", food:"FOOD", activity:"ACTIVITY",
+  scenic:"SCENIC", wildlife:"WILDLIFE", onboard:"SHIP", city:"PORT",
 };
 
 function App() {
-  useEffect(() => {
-    // Inject Google Fonts
-    const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-    // Set page title
-    document.title = "Voyage of the Glaciers · Alaska 2025";
-  }, []);
-
   const [activeSection, setActiveSection] = useState("vancouver");
   const [activeDay, setActiveDay] = useState("thu");
   const [expandedItem, setExpandedItem] = useState(null);
 
-  const visibleDays = allDays.filter((d) => d.section === activeSection);
-  const currentDay = allDays.find((d) => d.id === activeDay) || visibleDays[0];
-  const isDinnersOrSingleDay = activeSection === "dinners" || activeSection === "anchorage" || activeSection === "breweries" || activeSection === "maps";
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+    document.title = "Voyage of the Glaciers · Alaska 2026";
+  }, []);
 
-  const handleSectionChange = (sectionId) => {
-    setActiveSection(sectionId);
-    const firstDay = allDays.find((d) => d.section === sectionId);
-    setActiveDay(firstDay.id);
+  const noTabs = ["dinners","anchorage","breweries","maps"].includes(activeSection);
+  const visibleDays = allDays.filter(d => d.section === activeSection);
+  const currentDay = allDays.find(d => d.id === activeDay) || visibleDays[0];
+
+  const handleSection = (id) => {
+    setActiveSection(id);
+    const first = allDays.find(d => d.section === id);
+    setActiveDay(first.id);
     setExpandedItem(null);
   };
 
-  const handleDayChange = (dayId) => {
-    setActiveDay(dayId);
-    setExpandedItem(null);
-  };
+  const ff = { fontFamily: "'Fraunces', Georgia, serif" };
+  const fi = { fontFamily: "'Inter', system-ui, sans-serif" };
 
+  // ── RENDER ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: "#F8F7F4", fontFamily: "'Lora', Georgia, serif", color: "#1C1C1E" }}>
+    <div style={{ minHeight:"100vh", background: T.paper, ...fi, color: T.ink }}>
 
-      {/* ── HEADER ── */}
-      <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E7EB" }}>
-        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "28px 20px 0" }}>
-          <div style={{ fontSize: "10px", letterSpacing: "4px", color: "#9CA3AF", fontFamily: "'DM Mono', monospace", marginBottom: "6px" }}>
-            ALASKA 2026 · AUGUST 13–22
+      {/* ══ MASTHEAD ══════════════════════════════════════════════════════ */}
+      <div style={{ background: T.ink, color: T.paper }}>
+        <div style={{ maxWidth:720, margin:"0 auto", padding:"32px 20px 0" }}>
+
+          {/* Eyebrow */}
+          <div style={{ ...ff, fontSize:11, letterSpacing:"4px", color: T.inkFaint, textTransform:"uppercase", marginBottom:6 }}>
+            Alaska 2026 · August 13–22
           </div>
-          <h1 style={{ fontSize: "clamp(22px, 5vw, 36px)", fontWeight: "normal", margin: "0 0 3px", lineHeight: 1.1, color: "#111827" }}>
-            Voyage of the Glaciers
-          </h1>
-          <p style={{ fontSize: "12px", color: "#9CA3AF", margin: "0 0 20px", fontFamily: "'DM Mono', monospace" }}>
+
+          {/* Big title */}
+          <div style={{ display:"flex", alignItems:"baseline", gap:12, flexWrap:"wrap" }}>
+            <h1 style={{ ...ff, fontSize:"clamp(38px,9vw,68px)", fontWeight:900, lineHeight:0.92, letterSpacing:"-1.5px", color:"#FAF7F2", margin:0 }}>
+              Voyage
+            </h1>
+            <h1 style={{ ...ff, fontSize:"clamp(38px,9vw,68px)", fontWeight:900, lineHeight:0.92, letterSpacing:"-1.5px", fontStyle:"italic", color: T.glacier, margin:0 }}>
+              of the
+            </h1>
+            <h1 style={{ ...ff, fontSize:"clamp(38px,9vw,68px)", fontWeight:900, lineHeight:0.92, letterSpacing:"-1.5px", color:"#FAF7F2", margin:0 }}>
+              Glaciers
+            </h1>
+          </div>
+
+          <div style={{ ...ff, fontStyle:"italic", fontSize:16, color: T.inkFaint, marginTop:10, marginBottom:20 }}>
             Vancouver → Ketchikan → Juneau → Skagway → Glacier Bay → Anchorage
-          </p>
+          </div>
 
           {/* Section pills */}
-          <div style={{ display: "flex", gap: "6px", marginBottom: "0", flexWrap: "wrap" }}>
-            {sections.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => handleSectionChange(s.id)}
-                style={{
-                  padding: "7px 13px",
-                  background: activeSection === s.id ? s.color : "transparent",
-                  color: activeSection === s.id ? "#fff" : "#6B7280",
-                  border: `1px solid ${activeSection === s.id ? s.color : "#E5E7EB"}`,
-                  borderRadius: "20px", cursor: "pointer",
-                  fontFamily: "'DM Mono', monospace", fontSize: "10px", letterSpacing: "1px",
-                  fontWeight: activeSection === s.id ? "700" : "400",
-                  transition: "all 0.15s", whiteSpace: "nowrap",
-                }}
-              >
-                {s.emoji} {s.label.toUpperCase()}
-              </button>
-            ))}
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap", paddingBottom:20 }}>
+            {sections.map(s => {
+              const active = activeSection === s.id;
+              return (
+                <button key={s.id} onClick={() => handleSection(s.id)} style={{
+                  padding:"7px 14px",
+                  background: active ? s.color : "transparent",
+                  color: active ? "#FAF7F2" : T.inkFaint,
+                  border: `1px solid ${active ? s.color : "#3A3530"}`,
+                  borderRadius:20, cursor:"pointer",
+                  ...fi, fontSize:11, letterSpacing:"1px", fontWeight: active ? 600 : 400,
+                  transition:"all 0.15s", whiteSpace:"nowrap", textTransform:"uppercase",
+                }}>
+                  {s.emoji} {s.label}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Day tabs — hidden for single-day/no-tab sections */}
-          {!isDinnersOrSingleDay && (
-            <div style={{
-              display: "flex", overflowX: "auto", gap: "0",
-              marginTop: "16px", borderBottom: "2px solid #E5E7EB",
-              scrollbarWidth: "none", msOverflowStyle: "none",
-            }}>
-              {visibleDays.map((day) => {
-                const isActive = activeDay === day.id;
+          {/* Day tabs */}
+          {!noTabs && (
+            <div style={{ display:"flex", overflowX:"auto", borderTop:"1px solid #3A3530", scrollbarWidth:"none", msOverflowStyle:"none" }}>
+              {visibleDays.map(day => {
+                const active = activeDay === day.id;
                 return (
-                  <button
-                    key={day.id}
-                    onClick={() => handleDayChange(day.id)}
-                    style={{
-                      flexShrink: 0, padding: "10px 12px", background: "transparent",
-                      color: isActive ? day.color : "#9CA3AF",
-                      border: "none",
-                      borderBottom: isActive ? `3px solid ${day.color}` : "3px solid transparent",
-                      marginBottom: "-2px", cursor: "pointer",
-                      fontFamily: "'DM Mono', monospace", fontSize: "10px", letterSpacing: "0.5px",
-                      transition: "all 0.15s", fontWeight: isActive ? "700" : "400",
-                      lineHeight: 1.5, whiteSpace: "nowrap", textAlign: "center",
-                    }}
-                  >
-                    <div style={{ fontSize: "14px", marginBottom: "2px" }}>{day.emoji}</div>
+                  <button key={day.id} onClick={() => { setActiveDay(day.id); setExpandedItem(null); }} style={{
+                    flexShrink:0, padding:"12px 14px",
+                    background:"transparent",
+                    color: active ? T.glacier : T.inkFaint,
+                    border:"none",
+                    borderTop: active ? `2px solid ${T.glacier}` : "2px solid transparent",
+                    cursor:"pointer", ...ff, fontSize:11, letterSpacing:"0.5px",
+                    transition:"all 0.15s", fontWeight: active ? 700 : 400,
+                    lineHeight:1.5, whiteSpace:"nowrap", textAlign:"center",
+                  }}>
+                    <div style={{ fontSize:15, marginBottom:2 }}>{day.emoji}</div>
                     <div>{day.label.split(" · ")[0]}</div>
-                    <div style={{ fontSize: "9px", opacity: 0.8 }}>{day.shortLabel}</div>
+                    <div style={{ fontSize:9, opacity:0.7, letterSpacing:"1px" }}>{day.shortLabel}</div>
                   </button>
                 );
               })}
             </div>
           )}
-          {isDinnersOrSingleDay && <div style={{ height: "16px" }} />}
+          {noTabs && <div style={{ height:4 }} />}
         </div>
       </div>
 
-      {/* ── BODY ── */}
-      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "20px 20px 48px" }}>
+      {/* ══ BODY ══════════════════════════════════════════════════════════ */}
+      <div style={{ maxWidth:720, margin:"0 auto", padding:"0 20px 60px" }}>
 
-        {/* Day banner with hero photo */}
-        <div style={{
-          border: `1px solid ${currentDay.border}`,
-          borderRadius: "12px", marginBottom: "14px",
-          overflow: "hidden",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-        }}>
-          {currentDay.photo && (
-            <div style={{
-              width: "100%", height: "160px", position: "relative", overflow: "hidden",
-            }}>
-              <img
-                src={currentDay.photo}
-                alt={currentDay.title}
-                style={{
-                  width: "100%", height: "100%", objectFit: "cover",
-                  display: "block",
-                }}
-                onError={(e) => { e.target.style.display = "none"; e.target.parentNode.style.display = "none"; }}
-              />
-              <div style={{
-                position: "absolute", inset: 0,
-                background: `linear-gradient(to bottom, transparent 40%, ${currentDay.color}CC 100%)`,
-              }} />
-              <div style={{
-                position: "absolute", bottom: "12px", left: "16px", right: "16px",
-              }}>
-                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "rgba(255,255,255,0.8)", letterSpacing: "2px", fontWeight: "700", marginBottom: "2px" }}>
-                  {currentDay.label}
-                </div>
-                <div style={{ fontSize: "18px", color: "#fff", lineHeight: 1.2, fontFamily: "'Lora', Georgia, serif", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>
-                  {currentDay.title}
-                  <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "13px", fontStyle: "italic", marginLeft: "8px" }}>
+        {/* ── Hero photo + day title ─────────────────────────────────── */}
+        {currentDay.photo && (
+          <div style={{ position:"relative", margin:"0 -20px", overflow:"hidden", height:180 }}>
+            <img src={currentDay.photo} alt={currentDay.title}
+              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
+              onError={e => { e.target.style.display="none"; e.target.parentNode.style.height="0"; }}
+            />
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, transparent 20%, rgba(28,24,17,0.75) 100%)" }} />
+            <div style={{ position:"absolute", bottom:16, left:20, right:20 }}>
+              <div style={{ ...ff, fontWeight:900, fontSize:"clamp(22px,5vw,32px)", color:"#FAF7F2", lineHeight:1.1, letterSpacing:"-0.5px", textShadow:"0 2px 8px rgba(0,0,0,0.4)" }}>
+                {currentDay.title}
+                {currentDay.subtitle && (
+                  <span style={{ fontWeight:400, fontStyle:"italic", fontSize:"0.55em", color:"rgba(250,247,242,0.75)", marginLeft:10 }}>
                     {currentDay.subtitle}
                   </span>
-                </div>
+                )}
               </div>
-            </div>
-          )}
-          {!currentDay.photo && (
-            <div style={{
-              background: currentDay.bg, padding: "16px 20px",
-              display: "flex", alignItems: "center", gap: "12px",
-            }}>
-              <div style={{ fontSize: "28px" }}>{currentDay.emoji}</div>
-              <div>
-                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: currentDay.color, letterSpacing: "2px", fontWeight: "700", marginBottom: "2px" }}>
-                  {currentDay.label}
-                </div>
-                <div style={{ fontSize: "16px", color: "#111827", lineHeight: 1.2 }}>
-                  {currentDay.title}
-                  <span style={{ color: "#9CA3AF", fontSize: "13px", fontStyle: "italic", marginLeft: "8px" }}>
-                    {currentDay.subtitle}
-                  </span>
-                </div>
+              <div style={{ ...ff, fontSize:11, color:"rgba(250,247,242,0.6)", letterSpacing:"3px", textTransform:"uppercase", marginTop:4 }}>
+                {currentDay.label}
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Maps section */}
-        {activeSection === "maps" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-
-            {/* Vancouver map */}
-            <div style={{ background: "#FFFFFF", borderRadius: "12px", border: "1px solid #E5E7EB", overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-              <div style={{ padding: "14px 18px 10px", borderBottom: "1px solid #F3F4F6" }}>
-                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", letterSpacing: "2px", marginBottom: "3px" }}>AUG 13–15</div>
-                <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827" }}>🏙️ Vancouver, BC</div>
-                <div style={{ fontSize: "12px", color: "#6B7280", marginTop: "2px" }}>Coffee, breweries, dinners, cruise terminal — 11 pins</div>
-              </div>
-              <iframe
-                title="Vancouver Map"
-                width="100%"
-                height="400"
-                style={{ border: "none", display: "block" }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
-              />
-              <div style={{ padding: "12px 18px", background: "#F8FAFF", borderTop: "1px solid #EFF6FF" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {[
-                    { name: "Nemesis Coffee", type: "coffee" },
-                    { name: "Strathcona Beer Co", type: "beer" },
-                    { name: "Revolver Coffee", type: "coffee" },
-                    { name: "Capilano Bridge", type: "sightseeing" },
-                    { name: "Granville Island", type: "food" },
-                    { name: "Brassneck Brewery", type: "beer" },
-                    { name: "L'Abattoir", type: "dinner" },
-                    { name: "Salmon n' Bannock", type: "dinner" },
-                    { name: "Flying Pig Gastown", type: "dinner" },
-                    { name: "Cactus Club Harbour", type: "dinner" },
-                    { name: "Canada Place Terminal", type: "logistics" },
-                  ].map((pin, i) => {
-                    const colors = { coffee: ["#FEF3C7","#92400E"], beer: ["#DBEAFE","#1E40AF"], sightseeing: ["#D1FAE5","#065F46"], food: ["#D1FAE5","#065F46"], dinner: ["#FEE2E2","#991B1B"], logistics: ["#F3F4F6","#374151"] };
-                    const [bg, text] = colors[pin.type] || colors.logistics;
-                    return (
-                      <span key={i} style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", padding: "3px 8px", background: bg, color: text, borderRadius: "4px", letterSpacing: "0.3px" }}>
-                        {pin.name}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Anchorage map */}
-            <div style={{ background: "#FFFFFF", borderRadius: "12px", border: "1px solid #E5E7EB", overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-              <div style={{ padding: "14px 18px 10px", borderBottom: "1px solid #F3F4F6" }}>
-                <div style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", letterSpacing: "2px", marginBottom: "3px" }}>AUG 23</div>
-                <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827" }}>🦅 Anchorage, AK</div>
-                <div style={{ fontSize: "12px", color: "#6B7280", marginTop: "2px" }}>Breakfast through departure — 7 pins including ANC airport</div>
-              </div>
-              <iframe
-                title="Anchorage Map"
-                width="100%"
-                height="400"
-                style={{ border: "none", display: "block" }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
-              />
-              <div style={{ padding: "12px 18px", background: "#FFFBEB", borderTop: "1px solid #FEF3C7" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {[
-                    { name: "Snow City Cafe", type: "coffee" },
-                    { name: "Anchorage Museum", type: "sightseeing" },
-                    { name: "Tony Knowles Trail", type: "sightseeing" },
-                    { name: "Humpy's Alehouse", type: "beer" },
-                    { name: "49th State Brewing", type: "beer" },
-                    { name: "Wildlife Conservation Ctr", type: "activity" },
-                    { name: "ANC Airport", type: "logistics" },
-                  ].map((pin, i) => {
-                    const colors = { coffee: ["#FEF3C7","#92400E"], beer: ["#DBEAFE","#1E40AF"], sightseeing: ["#D1FAE5","#065F46"], activity: ["#EDE9FE","#4C1D95"], logistics: ["#F3F4F6","#374151"] };
-                    const [bg, text] = colors[pin.type] || colors.logistics;
-                    return (
-                      <span key={i} style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", padding: "3px 8px", background: bg, color: text, borderRadius: "4px", letterSpacing: "0.3px" }}>
-                        {pin.name}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Cruise ports note */}
-            <div style={{ padding: "14px 18px", background: "#FFFFFF", borderRadius: "10px", border: "1px solid #E5E7EB", fontFamily: "'DM Mono', monospace", fontSize: "11px", color: "#6B7280", lineHeight: 1.8 }}>
-              <div style={{ color: "#0369A1", fontWeight: "700", letterSpacing: "2px", fontSize: "10px", marginBottom: "6px" }}>CRUISE PORT MAPS</div>
-              Ketchikan, Juneau, Skagway, Glacier Bay, and Whittier are all accessible via Google Maps once you're on the ground. Ships dock at the town pier — everything highlighted in the cruise days is walkable or a short rideshare from the ship.
             </div>
           </div>
         )}
 
-        {/* Items */}
-        {activeSection !== "maps" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          {currentDay.items.map((item, idx) => {
-            const isExpanded = expandedItem === idx;
-            const ts = typeStyles[item.type] || typeStyles.logistics;
-
-            // City divider — non-interactive section header
-            if (item.type === "city") {
-              return (
-                <div key={idx} style={{
-                  display: "flex", alignItems: "center", gap: "10px",
-                  padding: "16px 4px 6px", marginTop: idx === 0 ? 0 : "8px",
-                }}>
-                  <div style={{ fontSize: "18px" }}>{item.emoji}</div>
-                  <div>
-                    <div style={{ fontSize: "13px", fontWeight: "700", color: "#111827", fontFamily: "'DM Mono', monospace", letterSpacing: "1px" }}>
-                      {item.title}
-                    </div>
-                    <div style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "1px" }}>{item.detail}</div>
-                  </div>
-                  <div style={{ flex: 1, height: "1px", background: "#E5E7EB", marginLeft: "8px" }} />
-                </div>
-              );
-            }
-
-            return (
-              <div
-                key={idx}
-                onClick={() => setExpandedItem(isExpanded ? null : idx)}
-                style={{
-                  background: "#FFFFFF",
-                  border: `1px solid ${isExpanded ? currentDay.border : "#E5E7EB"}`,
-                  borderRadius: "10px", padding: "14px 16px", cursor: "pointer",
-                  transition: "all 0.15s",
-                  boxShadow: isExpanded ? "0 2px 12px rgba(0,0,0,0.07)" : "0 1px 2px rgba(0,0,0,0.04)",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "10px", color: "#9CA3AF", minWidth: "66px", paddingTop: "3px", flexShrink: 0 }}>
-                    {item.time}
-                  </div>
-                  <div style={{ fontSize: "16px", paddingTop: "1px", minWidth: "20px", flexShrink: 0 }}>{item.emoji}</div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "7px", flexWrap: "wrap", marginBottom: "4px" }}>
-                      <span style={{ fontSize: "14px", fontWeight: "600", color: "#111827" }}>{item.title}</span>
-                      <span style={{
-                        fontSize: "8px", fontFamily: "'DM Mono', monospace", letterSpacing: "1px",
-                        padding: "2px 6px", background: ts.bg, color: ts.text,
-                        borderRadius: "3px", border: `1px solid ${ts.border}`, flexShrink: 0,
-                      }}>{typeLabels[item.type]}</span>
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#6B7280", lineHeight: 1.65 }}>{item.detail}</div>
-                    {isExpanded && (item.address || item.hours || item.tip) && (
-                      <div style={{
-                        marginTop: "10px", padding: "10px 14px",
-                        background: currentDay.bg, borderRadius: "7px",
-                        borderLeft: `3px solid ${currentDay.color}`,
-                      }}>
-                        {item.address && (
-                          <div style={{ display: "flex", gap: "10px", marginBottom: "5px" }}>
-                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", minWidth: "46px", paddingTop: "1px", flexShrink: 0 }}>WHERE</span>
-                            <span style={{ fontSize: "12px", color: "#374151" }}>{item.address}</span>
-                          </div>
-                        )}
-                        {item.hours && (
-                          <div style={{ display: "flex", gap: "10px", marginBottom: "5px" }}>
-                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: "#9CA3AF", minWidth: "46px", paddingTop: "1px", flexShrink: 0 }}>HOURS</span>
-                            <span style={{ fontSize: "12px", color: "#374151" }}>{item.hours}</span>
-                          </div>
-                        )}
-                        {item.tip && (
-                          <div style={{
-                            display: "flex", gap: "10px",
-                            marginTop: item.address || item.hours ? "7px" : 0,
-                            paddingTop: item.address || item.hours ? "7px" : 0,
-                            borderTop: item.address || item.hours ? `1px solid ${currentDay.border}` : "none",
-                          }}>
-                            <span style={{ fontSize: "9px", fontFamily: "'DM Mono', monospace", color: currentDay.color, minWidth: "46px", paddingTop: "1px", fontWeight: "700", flexShrink: 0 }}>PRO TIP</span>
-                            <span style={{ fontSize: "12px", color: "#374151", lineHeight: 1.65 }}>{item.tip}</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div style={{
-                    color: "#D1D5DB", fontSize: "12px", paddingTop: "4px",
-                    transition: "transform 0.2s", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0,
-                  }}>↓</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
+        {/* No-photo day banner */}
+        {!currentDay.photo && (
+          <div style={{ background: T.paper2, borderBottom:`2px solid ${T.rule}`, padding:"20px 0 16px" }}>
+            <div style={{ ...ff, fontWeight:900, fontSize:"clamp(22px,5vw,32px)", color: T.ink, letterSpacing:"-0.5px" }}>
+              {currentDay.title}
+              {currentDay.subtitle && (
+                <span style={{ fontWeight:400, fontStyle:"italic", fontSize:"0.55em", color: T.inkSoft, marginLeft:10 }}>
+                  {currentDay.subtitle}
+                </span>
+              )}
+            </div>
+            <div style={{ ...ff, fontSize:11, color: T.rust, letterSpacing:"3px", textTransform:"uppercase", marginTop:4 }}>
+              {currentDay.label}
+            </div>
+          </div>
         )}
 
-        {/* Contextual alerts */}
+        {/* ── Maps section ──────────────────────────────────────────── */}
+        {activeSection === "maps" && (
+          <div style={{ display:"flex", flexDirection:"column", gap:24, paddingTop:24 }}>
+
+            <div style={{ background:"#fff", borderRadius:6, border:`1px solid ${T.rule}`, overflow:"hidden", boxShadow:`0 2px 8px ${T.shadow}` }}>
+              <div style={{ padding:"14px 18px 10px", borderBottom:`1px solid ${T.rule}` }}>
+                <div style={{ ...ff, fontSize:10, color: T.inkFaint, letterSpacing:"3px", textTransform:"uppercase", marginBottom:3 }}>AUG 13–15</div>
+                <div style={{ ...ff, fontWeight:700, fontSize:18, color: T.ink }}>🏙️ Vancouver, BC</div>
+                <div style={{ ...fi, fontSize:12, color: T.inkSoft, marginTop:2 }}>Coffee, breweries, dinners, cruise terminal — 11 pins</div>
+              </div>
+              <iframe title="Vancouver Map" width="100%" height="380"
+                style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
+              />
+              <div style={{ padding:"12px 18px", background: T.paper2 }}>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                  {[["Nemesis Coffee","coffee"],["Strathcona Beer Co","beer"],["Revolver Coffee","coffee"],["Capilano Bridge","sightseeing"],["Granville Island","food"],["Brassneck Brewery","beer"],["L'Abattoir","dinner"],["Salmon n' Bannock","dinner"],["Flying Pig Gastown","dinner"],["Cactus Club Harbour","dinner"],["Canada Place Terminal","logistics"]].map(([name,type],i) => (
+                    <span key={i} style={{ fontSize:10, ...fi, padding:"3px 8px", background: PIN[type].bg, color: PIN[type].text, borderRadius:3 }}>{name}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ background:"#fff", borderRadius:6, border:`1px solid ${T.rule}`, overflow:"hidden", boxShadow:`0 2px 8px ${T.shadow}` }}>
+              <div style={{ padding:"14px 18px 10px", borderBottom:`1px solid ${T.rule}` }}>
+                <div style={{ ...ff, fontSize:10, color: T.inkFaint, letterSpacing:"3px", textTransform:"uppercase", marginBottom:3 }}>AUG 22</div>
+                <div style={{ ...ff, fontWeight:700, fontSize:18, color: T.ink }}>🦅 Anchorage, AK</div>
+                <div style={{ ...fi, fontSize:12, color: T.inkSoft, marginTop:2 }}>Breakfast through departure — 7 pins including ANC airport</div>
+              </div>
+              <iframe title="Anchorage Map" width="100%" height="380"
+                style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
+              />
+              <div style={{ padding:"12px 18px", background: T.paper2 }}>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                  {[["Snow City Cafe","coffee"],["Anchorage Museum","sightseeing"],["Tony Knowles Trail","sightseeing"],["Humpy's Alehouse","beer"],["49th State Brewing","beer"],["Wildlife Conservation Ctr","activity"],["ANC Airport","logistics"]].map(([name,type],i) => (
+                    <span key={i} style={{ fontSize:10, ...fi, padding:"3px 8px", background: PIN[type].bg, color: PIN[type].text, borderRadius:3 }}>{name}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ padding:"14px 18px", background:"#fff", borderRadius:6, border:`1px solid ${T.rule}`, ...fi, fontSize:11, color: T.inkSoft, lineHeight:1.9 }}>
+              <div style={{ ...ff, color: T.glacierDeep, fontWeight:600, letterSpacing:"2px", fontSize:10, textTransform:"uppercase", marginBottom:6 }}>CRUISE PORT MAPS</div>
+              Ketchikan, Juneau, Skagway, Glacier Bay, and Whittier are all best navigated on the ground. Ships dock at the town pier — everything in the cruise days is walkable or a short rideshare from the ship.
+            </div>
+          </div>
+        )}
+
+        {/* ── Items list ────────────────────────────────────────────── */}
+        {activeSection !== "maps" && (
+          <div style={{ paddingTop:8 }}>
+            {currentDay.items.map((item, idx) => {
+              const isExpanded = expandedItem === idx;
+              const pin = PIN[item.type] || PIN.logistics;
+
+              // City divider
+              if (item.type === "city") {
+                return (
+                  <div key={idx} style={{ display:"flex", alignItems:"center", gap:10, padding:"28px 0 10px", marginTop: idx === 0 ? 0 : 4 }}>
+                    <div style={{ fontSize:20 }}>{item.emoji}</div>
+                    <div>
+                      <div style={{ ...ff, fontWeight:700, fontSize:15, color: T.ink, letterSpacing:"0.5px" }}>{item.title}</div>
+                      <div style={{ ...fi, fontSize:11, color: T.inkSoft, marginTop:1 }}>{item.detail}</div>
+                    </div>
+                    <div style={{ flex:1, height:1, background: T.rule, marginLeft:8 }} />
+                  </div>
+                );
+              }
+
+              return (
+                <div key={idx} onClick={() => setExpandedItem(isExpanded ? null : idx)}
+                  style={{
+                    borderBottom: `1px solid ${T.rule}`,
+                    padding:"16px 0",
+                    cursor:"pointer",
+                    transition:"background 0.1s",
+                  }}
+                >
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:12 }}>
+
+                    {/* Time */}
+                    <div style={{ ...ff, fontSize:12, fontWeight:600, color: T.inkFaint, minWidth:70, paddingTop:3, flexShrink:0, letterSpacing:"0.3px" }}>
+                      {item.time}
+                    </div>
+
+                    {/* Emoji */}
+                    <div style={{ fontSize:17, paddingTop:2, minWidth:22, flexShrink:0 }}>{item.emoji}</div>
+
+                    {/* Content */}
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", marginBottom:4 }}>
+                        <span style={{ ...ff, fontWeight:700, fontSize:17, color: T.ink, lineHeight:1.2 }}>
+                          {item.title}
+                        </span>
+                        <span style={{
+                          ...fi, fontSize:9, letterSpacing:"1.5px", textTransform:"uppercase",
+                          padding:"2px 7px", background: pin.bg, color: pin.text,
+                          borderRadius:3, flexShrink:0, fontWeight:600,
+                        }}>
+                          {PIN_LABELS[item.type]}
+                        </span>
+                      </div>
+                      <div style={{ ...fi, fontSize:13, color: T.inkSoft, lineHeight:1.65 }}>
+                        {item.detail}
+                      </div>
+
+                      {/* Expanded panel */}
+                      {isExpanded && (item.address || item.hours || item.tip) && (
+                        <div style={{
+                          marginTop:12, padding:"12px 16px",
+                          background: T.paper2,
+                          borderRadius:4,
+                          borderLeft: `3px solid ${T.glacier}`,
+                        }}>
+                          {item.address && (
+                            <div style={{ display:"flex", gap:10, marginBottom:6 }}>
+                              <span style={{ ...ff, fontSize:9, color: T.inkFaint, minWidth:46, paddingTop:1, flexShrink:0, letterSpacing:"1.5px", textTransform:"uppercase", fontWeight:600 }}>Where</span>
+                              <span style={{ ...fi, fontSize:12, color: T.ink }}>{item.address}</span>
+                            </div>
+                          )}
+                          {item.hours && (
+                            <div style={{ display:"flex", gap:10, marginBottom:6 }}>
+                              <span style={{ ...ff, fontSize:9, color: T.inkFaint, minWidth:46, paddingTop:1, flexShrink:0, letterSpacing:"1.5px", textTransform:"uppercase", fontWeight:600 }}>Hours</span>
+                              <span style={{ ...fi, fontSize:12, color: T.ink }}>{item.hours}</span>
+                            </div>
+                          )}
+                          {item.tip && (
+                            <div style={{
+                              display:"flex", gap:10,
+                              marginTop: item.address || item.hours ? 8 : 0,
+                              paddingTop: item.address || item.hours ? 8 : 0,
+                              borderTop: item.address || item.hours ? `1px solid ${T.rule}` : "none",
+                            }}>
+                              <span style={{ ...ff, fontSize:9, color: T.rust, minWidth:46, paddingTop:1, flexShrink:0, letterSpacing:"1.5px", textTransform:"uppercase", fontWeight:700 }}>Tip</span>
+                              <span style={{ ...fi, fontSize:12, color: T.ink, fontStyle:"italic", lineHeight:1.65 }}>{item.tip}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Expand toggle */}
+                    <div style={{
+                      color: T.rule, fontSize:13, paddingTop:4,
+                      transition:"transform 0.2s",
+                      transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                      flexShrink:0,
+                    }}>↓</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ── Contextual alerts ─────────────────────────────────────── */}
         {activeDay === "thu" && (
-          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FFFBEB", borderRadius: "10px", border: "1px solid #FDE68A", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#92400E" }}>
+          <div style={{ marginTop:20, padding:"12px 18px", background: T.amberTint, borderRadius:6, border:`1px solid ${T.amber}`, ...fi, fontSize:12, color: T.ink }}>
             ⏱ <strong>Customs heads-up:</strong> Budget 60–75 minutes from wheels down to outside the terminal with 6 people. Don't book anything tight for early afternoon.
           </div>
         )}
         {activeDay === "fri" && (
-          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FEF2F2", borderRadius: "10px", border: "1px solid #FECACA", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#991B1B" }}>
+          <div style={{ marginTop:20, padding:"12px 18px", background: T.rustTint, borderRadius:6, border:`1px solid ${T.rust}`, ...fi, fontSize:12, color: T.rust }}>
             🚨 <strong>L'Abattoir reminder:</strong> Closed Sunday. Tonight is your ONLY shot. If you're going, make that reservation before you close this app.
           </div>
         )}
         {activeDay === "wed" && (
-          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#ECFDF5", borderRadius: "10px", border: "1px solid #6EE7B7", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#065F46" }}>
+          <div style={{ marginTop:20, padding:"12px 18px", background:"rgba(44,143,163,0.08)", borderRadius:6, border:`1px solid ${T.glacier}`, ...fi, fontSize:12, color: T.glacierDeep }}>
             🚂 <strong>White Pass Railway: 2:15pm — confirmed.</strong> Sit on the LEFT side of the train for the best gorge views. Check in at the Broadway depot by ~1:45pm.
           </div>
         )}
         {activeDay === "thu-glacier-bay" && (
-          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#ECFEFF", borderRadius: "10px", border: "1px solid #67E8F9", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#164E63" }}>
+          <div style={{ marginTop:20, padding:"12px 18px", background:"rgba(44,143,163,0.08)", borderRadius:6, border:`1px solid ${T.glacier}`, ...fi, fontSize:12, color: T.glacierDeep }}>
             🧊 <strong>The ship enters Glacier Bay at 6:15am.</strong> Set an alarm. This is the whole reason you came to Alaska — do not sleep through it.
           </div>
         )}
-        {activeDay === "sat-anchorage" && (
-          <div style={{ marginTop: "16px", padding: "12px 18px", background: "#FFFBEB", borderRadius: "10px", border: "1px solid #FDE68A", fontFamily: "'DM Mono', monospace", fontSize: "12px", color: "#92400E" }}>
-            🚇 <strong>Tunnel timing:</strong> The Whittier tunnel alternates directions on a roughly 30-min cycle. Your shuttle driver will know the schedule, but don't be surprised by a wait.
+        {activeDay === "fri-college-fjord" && (
+          <div style={{ marginTop:20, padding:"12px 18px", background: T.amberTint, borderRadius:6, border:`1px solid ${T.amber}`, ...fi, fontSize:12, color: T.ink }}>
+            ✈️ <strong>ANC → DFW flight check:</strong> Confirm your Aug 22 departure time and build your Whittier → Anchorage transfer around it. The tunnel out of Whittier has wait times.
+          </div>
+        )}
+        {activeSection === "anchorage" && (
+          <div style={{ marginTop:20, padding:"12px 18px", background: T.amberTint, borderRadius:6, border:`1px solid ${T.amber}`, ...fi, fontSize:12, color: T.ink }}>
+            🚇 <strong>Tunnel timing:</strong> The Whittier tunnel alternates directions on a roughly 30-min cycle. Your shuttle driver will know — just don't be surprised by a wait.
           </div>
         )}
 
-        {/* Route footer */}
-        <div style={{
-          marginTop: "24px", padding: "14px 18px", background: "#FFFFFF",
-          borderRadius: "10px", border: "1px solid #E5E7EB",
-          fontFamily: "'DM Mono', monospace", fontSize: "10px", color: "#9CA3AF",
-        }}>
-          <div style={{ marginBottom: "8px", color: "#6B7280", fontSize: "9px", letterSpacing: "2px" }}>FULL ROUTE</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", alignItems: "center" }}>
+        {/* ── Route footer ──────────────────────────────────────────── */}
+        <div style={{ marginTop:32, paddingTop:20, borderTop:`1px solid ${T.rule}` }}>
+          <div style={{ ...ff, fontSize:9, color: T.inkFaint, letterSpacing:"3px", textTransform:"uppercase", marginBottom:10 }}>Full Route</div>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:6, alignItems:"center" }}>
             {[
-              { label: "Vancouver", dayId: "thu", section: "vancouver" },
-              { label: "→" },
-              { label: "Inside Passage", dayId: "sun", section: "cruise" },
-              { label: "→" },
-              { label: "Ketchikan", dayId: "mon", section: "cruise" },
-              { label: "→" },
-              { label: "Juneau", dayId: "tue", section: "cruise" },
-              { label: "→" },
-              { label: "Skagway", dayId: "wed", section: "cruise" },
-              { label: "→" },
-              { label: "Glacier Bay", dayId: "thu-glacier-bay", section: "cruise" },
-              { label: "→" },
-              { label: "College Fjord", dayId: "fri-college-fjord", section: "cruise" },
-              { label: "→" },
-              { label: "Anchorage", dayId: "sat-anchorage", section: "anchorage" },
+              { label:"Vancouver", dayId:"thu", section:"vancouver" },
+              { label:"→" },
+              { label:"Inside Passage", dayId:"sun", section:"cruise" },
+              { label:"→" },
+              { label:"Ketchikan", dayId:"mon", section:"cruise" },
+              { label:"→" },
+              { label:"Juneau", dayId:"tue", section:"cruise" },
+              { label:"→" },
+              { label:"Skagway", dayId:"wed", section:"cruise" },
+              { label:"→" },
+              { label:"Glacier Bay", dayId:"thu-glacier-bay", section:"cruise" },
+              { label:"→" },
+              { label:"College Fjord", dayId:"fri-college-fjord", section:"cruise" },
+              { label:"→" },
+              { label:"Anchorage", dayId:"sat-anchorage", section:"anchorage" },
             ].map((stop, i) => {
               const isCurrent = stop.dayId === activeDay || (activeSection === "anchorage" && stop.label === "Anchorage");
               return (
-                <span
-                  key={i}
-                  onClick={() => {
-                    if (stop.dayId) {
-                      setActiveSection(stop.section);
-                      setActiveDay(stop.dayId);
-                      setExpandedItem(null);
-                    }
-                  }}
-                  style={{
-                    color: isCurrent ? "#111827" : stop.label === "→" ? "#E5E7EB" : "#9CA3AF",
-                    fontWeight: isCurrent ? "700" : "400",
-                    cursor: stop.dayId ? "pointer" : "default",
-                    fontSize: "10px",
-                    textDecoration: isCurrent ? "underline" : "none",
-                    textUnderlineOffset: "3px",
-                  }}
-                >
+                <span key={i} onClick={() => {
+                  if (stop.dayId) { setActiveSection(stop.section); setActiveDay(stop.dayId); setExpandedItem(null); }
+                }} style={{
+                  ...ff, fontWeight: isCurrent ? 700 : 400,
+                  fontSize:11,
+                  color: isCurrent ? T.ink : stop.label === "→" ? T.rule : T.inkSoft,
+                  cursor: stop.dayId ? "pointer" : "default",
+                  textDecoration: isCurrent ? "underline" : "none",
+                  textUnderlineOffset:3,
+                }}>
                   {stop.label}
                 </span>
               );
             })}
           </div>
         </div>
+
       </div>
     </div>
   );
