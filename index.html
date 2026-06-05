@@ -153,8 +153,8 @@ const allDays = [
       { time: "3:30 PM", emoji: "🐕", title: "Mikey & Jennifer → Dog Sledding Excursion", detail: "Mikey and Jennifer's 3:30pm dog sledding excursion. Separate from the kayakers — coordinate rideshares so everyone gets to their activity on time. Confirm operator pickup details in advance.", type: "activity", tip: "Make sure you know the exact meetup location and have a way to contact the operator on the day. Cell service in Juneau can be spotty outside downtown." },
       { time: "3:00 PM", emoji: "👴👵", title: "Parents — Free Afternoon", detail: "While the younger crew is kayaking and dog sledding, mom and dad get a low-key afternoon. Two good options: head back to the ship for a nap and some quiet time (zero shame in that — it's been a big day), or wander downtown Juneau's shops, galleries, and waterfront. S. Franklin St has plenty to browse — jewelry, local art, smoked salmon shops, and good people-watching.", type: "logistics", tip: "Downtown Juneau is compact and flat — easy walking from the pier. No need for a rideshare. The cruise terminal area has benches and waterfront views if all you want is to sit and watch the channel." },
       { time: "~6:00 PM", emoji: "🔁", title: "Full Group Reconvenes — Alaskan Brewing Company", detail: "Kayakers back from the water, dog sledders back from their excursion, parents head over from downtown — everyone meets at Alaskan Brewing Co. for a post-adventure debrief. About 10 min from downtown by rideshare. Full taproom, tours, the Amber Ale that defined Alaskan craft beer. You've all earned it.", type: "beer", address: "5429 Shaune Dr", tip: "Rideshare out from downtown — about $15-20. Rideshare back after. Don't try to walk it. Confirm the meetup time with both excursion groups before you split so nobody's waiting." },
-      { time: "6:30 PM", emoji: "🍽️", title: "Dinner — The Hangar on the Wharf", detail: "Waterfront views, massive menu, 125+ beers on tap. Big enough for the whole group to eat together without a wait if you call ahead. Halibut and chips, chowder in a sourdough bowl, king crab legs. Good celebratory dinner after a full Juneau day.", type: "dinner", address: "2 Marine Way", tip: "Call ahead to hold a table for 6. All-aboard is 8:30pm — aim to be back at the pier by 8:15pm, so dinner needs to be wrapped by 7:30-7:45pm at the latest." },
-      { time: "8:00 PM", emoji: "🍺", title: "Devil's Club Brewing — Nightcap", detail: "Newer Juneau brewery with great pub food if anyone's still hungry. Most cruise passengers are already back on the ship — this is your More Ashore window. Stay until 9pm and still make it back comfortably.", type: "beer", tip: "Named after Alaska's signature spiky plant. If you've hiked anywhere near here, you've met it." },
+      { time: "5:40 PM", emoji: "⭐", title: "Dinner — The Catch", detail: "Your booked 5:40pm reservation. The Catch is Juneau's go-to for fresh Alaskan seafood done right — king crab, halibut, salmon. This is the special dinner of the port days. Reservation confirmed, group is together, and you've had one of the best days of the trip. Order accordingly.", type: "dinner", tip: "You're done by 7pm at the latest, back at the pier well before the 8:30pm all-aboard. Perfect timing." },
+      { time: "7:15 PM", emoji: "🍺", title: "Devil's Club Brewing — Nightcap", detail: "Post-dinner nightcap with the More Ashore window. Most cruise passengers are already back on the ship by now — this is your move. Newer brewery with a great tap list and a relaxed vibe. Head back to the pier by 8:15pm.", type: "beer", tip: "Named after Alaska's signature spiky plant. If you've hiked anywhere near here, you've met it. One round, then pier." },
       { time: "9:15 PM", emoji: "🚢", title: "All Aboard", detail: "Back to the ship by 9:15pm. Biggest port day of the trip — well earned.", type: "logistics", tip: "It's a short walk back to the ship from downtown Juneau. Don't cut it to the last minute." },
     ],
   },
@@ -282,17 +282,25 @@ const allDays = [
         time: "~8:00 PM",
         emoji: "🚕",
         title: "Head to ANC Airport",
-        detail: "Ted Stevens Anchorage International Airport. About 10-15 min from downtown. Your flight departs around midnight — arrive by 9:30–10pm to clear security without rushing. International-ish vibe with plenty of bars and restaurants airside if you need to kill time.",
+        detail: "Ted Stevens Anchorage International Airport. About 10-15 min from downtown. Return the rental car first, then head to the terminal. Your 10:25pm flight means you want to be through security by 9pm.",
         type: "logistics",
-        tip: "ANC is not a huge airport — security lines are manageable. But don't show up at 11:30 for a midnight flight after a long day. Give yourselves a cushion.",
+        tip: "ANC is not a huge airport — security is manageable. But you've got a rental car to drop, so leave 49th State by 8pm to give yourselves a comfortable buffer.",
       },
       {
-        time: "~Midnight",
+        time: "10:25 PM",
         emoji: "✈️",
-        title: "ANC → DFW",
-        detail: "Wheels up. Trip complete. You've seen Glacier Bay, walked on a glacier, watched humpbacks breach, had salmon in five different port cities, and closed out every craft brewery in Southeast Alaska. Not bad.",
+        title: "ANC → Denver (DEN)",
+        detail: "Wheels up from Anchorage. First leg of the journey home. Sleep on this one — you've earned it.",
         type: "logistics",
-        tip: "Confirm your exact flight details against your booking. And sleep on the plane — you've earned it.",
+        tip: "Get to ANC by 8:30pm at the latest to clear security without rushing. Drop the rental car before heading to the terminal.",
+      },
+      {
+        time: "Sun · Aug 24",
+        emoji: "🏠",
+        title: "Denver → Dallas (DFW) · Arrive ~10:45 AM",
+        detail: "Connect through Denver and land back in Dallas around 10:45am Sunday. Trip complete. You've seen Glacier Bay, walked on a glacier, watched humpbacks breach, had salmon in five different port cities, and closed out every craft brewery in Southeast Alaska. Not bad.",
+        type: "logistics",
+        tip: "Confirm your Denver layover time against your booking — make sure there's enough buffer to connect comfortably.",
       },
     ],
   },
@@ -668,7 +676,7 @@ function App() {
               </div>
               <iframe title="Vancouver Map" width="100%" height="380"
                 style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88&q=Nemesis+Coffee+Vancouver+BC&center=49.278,-123.108&zoom=13"
               />
               <div style={{ padding:"12px 18px", background: T.paper2 }}>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
@@ -687,7 +695,7 @@ function App() {
               </div>
               <iframe title="Anchorage Map" width="100%" height="380"
                 style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
+                src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88&q=49th+State+Brewing+Anchorage+AK&center=61.210,-149.910&zoom=12"
               />
               <div style={{ padding:"12px 18px", background: T.paper2 }}>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
