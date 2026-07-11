@@ -499,6 +499,8 @@ const T = {
   amberTint:  "rgba(196,124,26,0.10)",
   rule:       "#DDD5C8",
   shadow:     "rgba(28,24,17,0.08)",
+  card:       "#FFFFFF",
+  dim:        "#A89880",
 };
 
 // ── PIN BADGE STYLES ──────────────────────────────────────────────────────────
@@ -998,18 +1000,18 @@ function ChoiceLanes({ data }) {
         </div>
         <div style={{ display:"flex", gap:8 }}>
           {data.options.map((opt, i) => (
-            <div key={opt.id} style={{ flex:1, background:T.card, border:`1px solid ${T.rule}`, borderRadius:11, padding:"11px 9px", display:"flex", flexDirection:"column", gap:6, boxShadow:`0 2px 8px ${T.shadow}` }}>
+            <div key={opt.id} style={{ flex:1, background:T.paper, border:`1px solid ${T.rule}`, borderRadius:11, padding:"11px 9px", display:"flex", flexDirection:"column", gap:6, boxShadow:`0 2px 8px ${T.shadow}` }}>
               <div style={{ display:"flex", alignItems:"center", gap:7 }}>
                 <div style={{ width:32, height:32, borderRadius:"50%", background:colColors[i%colColors.length]+"22", display:"grid", placeItems:"center", color:colColors[i%colColors.length], flexShrink:0 }}>
                   <Icon name={opt.icon} size={16} />
                 </div>
                 <div>
                   <div style={{ ...ff, fontWeight:700, fontSize:12, color:T.ink, lineHeight:1.2 }}>{opt.title}</div>
-                  <div style={{ ...fi, fontSize:10, color:T.dim, lineHeight:1.2 }}>{opt.subtitle}</div>
+                  <div style={{ ...fi, fontSize:10, color:T.inkFaint, lineHeight:1.2 }}>{opt.subtitle}</div>
                 </div>
               </div>
               {opt.badge && <div style={{ ...fi, fontSize:9, letterSpacing:"0.5px", color:colColors[i%colColors.length], background:colColors[i%colColors.length]+"18", borderRadius:4, padding:"2px 6px", alignSelf:"flex-start" }}>{opt.badge}</div>}
-              <div style={{ ...fi, fontSize:11, color:T.dim, lineHeight:1.55 }}>{opt.detail}</div>
+              <div style={{ ...fi, fontSize:11, color:T.inkFaint, lineHeight:1.55 }}>{opt.detail}</div>
               {opt.tip && <div style={{ ...fi, fontSize:10, color:T.ink, background:T.paper2, borderRadius:6, padding:"6px 8px", borderLeft:`2px solid ${colColors[i%colColors.length]}`, lineHeight:1.5 }}>💡 {opt.tip}</div>}
             </div>
           ))}
