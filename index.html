@@ -179,6 +179,7 @@ const allDays = [
       { time: "Port Day", emoji: "📍", title: "Port Overview · 6:30am–8:30pm", detail: "14 hours in port — plenty of time for the railway, the historic park, and a post-train beer. Skagway is tiny, walkable, and packs a lot in.", type: "logistics", tip: "Everything is walkable from the pier. Broadway Street is the main drag." },
       { time: "Morning", emoji: "☕", title: "Skagway Brewing Company", detail: "Right on Broadway — first stop off the ship. Grab a Spruce Tip Ale and some food. You have a relaxed morning before the 2:15pm railway departure, so use it.", address: "7th & Broadway", type: "beer", tip: "Spruce Tip Ale is made with locally harvested spruce tips. Not getting that in Dallas." },
       { time: "Morning", emoji: "🪙", title: "Klondike Gold Rush National Historic Park", detail: "Free to enter — the whole historic downtown is the park. Ranger-led walking tours run in the morning and are excellent. Perfect way to fill the hours before the railway and get the full gold rush context before you ride through it.", type: "sightseeing", tip: "Morning ranger tours are less crowded. Check the visitor center schedule when you arrive." },
+      { time: "12:00 PM", emoji: "🍽️", title: "Lunch — Pick One", detail: "Three solid options in Skagway before the 2:15pm railway departure. Skagway Fish Co for fresh halibut, Peppers for tacos and elote, or the Station Bar for pub food and chowder. See the options below.", type: "food", tip: "Eat before the train — the 2.5-hour railway tour is scenic but does not include food." },
       { time: "~1:45 PM", emoji: "🎟️", title: "Head to the Depot", detail: "White Pass & Yukon Route depot is right on Broadway near the pier — hard to miss. Check in 30 minutes before departure. Confirm your tickets and get your car assignment.", type: "logistics", tip: "Sit on the LEFT side of the train heading out of Skagway for the best views of the gorge and Dead Horse Gulch." },
       { time: "2:15 PM", emoji: "🚂", title: "White Pass & Yukon Route Railway", detail: "Your booked 2:15pm tour — approximately 2.5 hours. Narrow-gauge railroad built in 1898 that climbs 3,000 feet through dramatic mountain passes. Dead Horse Gulch, Bridal Veil Falls, the original gold rush trail visible below. One of the most scenic rail rides in North America. Back in Skagway by ~4:45pm.", type: "sightseeing", tip: "Window seats go fast — stake one out early once you board. The views are worth it." },
       { time: "~5:00 PM", emoji: "🍺", title: "Post-Train Beer", detail: "You'll be back in town with an hour or so before all-aboard. Return to Skagway Brewing or pop into Klondike Brewing if it's less crowded. You just rode a 128-year-old train through the Klondike. That earns a beer.", type: "beer", tip: "Know your all-aboard time and don't push it. Missing the ship in Skagway — population 900, zero roads out — is a special kind of problem." },
@@ -469,13 +470,6 @@ const allDays = [
     ],
   },
 
-  // ── MAPS ──────────────────────────────────────────────────
-  {
-    id: "maps", label: "Maps", shortLabel: "MAPS", section: "maps",
-    title: "Port Maps", subtitle: "Pinned stops at every destination",
-    color: "#0369A1", bg: "#F0F9FF", border: "#BAE6FD", emoji: "🗺️",
-    items: [],
-  },
 ];
 
 const sections = [
@@ -484,7 +478,6 @@ const sections = [
   { id: "cruise",     label: "The Cruise",     emoji: "🚢", color: "#1A5C73" },
   { id: "anchorage",  label: "Anchorage Day",  emoji: "🦅", color: "#7C4A00" },
   { id: "breweries",  label: "Beer Guide",     emoji: "🍺", color: "#3A5A8A" },
-  { id: "maps",       label: "Maps",           emoji: "🗺️", color: "#0369A1" },
 ];
 
 // ── DESIGN TOKENS ─────────────────────────────────────────────────────────────
@@ -570,6 +563,42 @@ const juneauSplit = {
     { id:"free",   activity:"Gold Mine Panning Tour", time:"3:00 PM", icon:"pickaxe",who:["mom","dad"],   note:"Downtown wander or ship nap" },
   ],
   reconvene: { time:"~6:00 PM", place:"Alaskan Brewing Co.", icon:"beer", note:"Whole crew back together — rideshare from downtown" },
+};
+
+// ── CHOICE LANES DATA ────────────────────────────────────────────────────
+const juneauLunchChoices = {
+  label: "Lunch — Pick One", time: "12:30 PM",
+  options: [
+    { id:"dave",    title:"Deckhand Dave's", subtitle:"Wild Alaskan fish tacos",   icon:"fish",   badge:"#1 in Juneau · TripAdvisor",  detail:"Beer-battered halibut, blackened rockfish, salmon — on soft corn tortillas with red cabbage slaw & crema. Also: halibut chowder that people lose their minds over. Steps from the pier at the food truck park.",  tip:"Order double tortilla. Get the chowder if it's cold." },
+    { id:"rookery", title:"The Rookery",     subtitle:"Coffee house bistro",        icon:"coffee", badge:"Local favorite · scratch menu", detail:"111 Seward St downtown. Housemade bread, hand-ground burgers, fried chicken sandwich, the Benedang eggs benny. Stumptown coffee, baked goods, best tots in Juneau. Closes at 2pm.",  tip:"Get here before 1pm — closes at 2pm. The dirty chai is legit." },
+    { id:"pelmeni", title:"Pel'meni",        subtitle:"Russian dumplings",          icon:"circle", badge:"4.8 stars · cash only · $9",    detail:"2 Marine Way, right on the waterfront. The entire menu is beef or potato dumplings. That's it. Topped with curry, sriracha vinegar, sour cream, cilantro. Absurdly good. Absurdly cheap. Open until 1:30am on weekdays.",  tip:"Cash only. Beef dumplings with everything. No questions." },
+  ],
+};
+
+const juneauDinnerChoices = {
+  label: "Dinner — Pick One", time: "6:30 PM",
+  options: [
+    { id:"hangar",  title:"Hangar on the Wharf", subtitle:"Waterfront views · 125+ taps", icon:"anchor", badge:"Group-friendly · big space", detail:"2 Marine Way. Right on the water. Massive menu — halibut & chips, chowder in a sourdough bowl, king crab. 125+ beers on tap. Big enough for 6 without a wait if you call ahead. Classic Juneau port night dinner.", tip:"Call ahead to hold a table for 6. Back by 8:15pm for the 8:30pm all-aboard." },
+    { id:"tracys",  title:"Tracy's King Crab",   subtitle:"Famous king crab shack",       icon:"star",   badge:"Gets packed fast · go early",  detail:"432 S Franklin St. The most famous seafood stop in Juneau. King crab legs, crab bisque, crab cakes — that's really it and it doesn't need to be anything else. The bisque alone justifies the trip. Gets absolutely slammed by cruise passengers.", tip:"Go early or expect a serious wait. The Whittier St location has shorter lines than the pier spot." },
+    { id:"salt",    title:"SALT",              subtitle:"Juneau's most ambitious kitchen", icon:"gem",    badge:"Make a reservation",           detail:"Innovative Alaska-sourced tasting-forward menu. Creative preparations, local ingredients, the kind of dinner worth planning your evening around. Completely different league from the other two — best for when the group wants something special.", tip:"Reservations strongly recommended. Best for a night the whole group is in the mood to commit to a real dinner." },
+  ],
+};
+
+const skagwayLunchChoices = {
+  label: "Lunch — Pick One", time: "11:30 AM",
+  options: [
+    { id:"fishco",  title:"Skagway Fish Co.",     subtitle:"Best halibut F&C in Skagway", icon:"fish",   badge:"4.6 stars · 7 min from pier",  detail:"201 Congress Way. Consistently called the best fish and chips in town — halibut hand-battered, impossibly fresh, poutine worth ordering, crab legs for the table. Waterfront patio with mountain views. Open 11am–8pm.", tip:"Get the halibut F&C. Period. One reviewer called it the best they've ever had, including England." },
+    { id:"peppers", title:"Peppers Street Fusion", subtitle:"Mexican-Cuban food bus",      icon:"flame",  badge:"Best value in Skagway",        detail:"306 2nd Ave — a converted red school bus, 2 blocks from Broadway. Barbacoa, housemade chorizo, halibut tacos, elote corn. Burritos the size of your forearm. One of the only places in Skagway where two people eat for ~$20. Hidden gem.", tip:"The street corn. Don't leave without it. Elote with a cheese twist." },
+    { id:"station", title:"The Station Bar & Grill", subtitle:"Local pub · pizza · chowder", icon:"beer",  badge:"Local favorite · off tourist strip", detail:"444 4th Ave, just off the main drag. Famous homemade fish & chips, New England clam chowder that beats Boston (per regulars), great burgers and pizza. Feels like a real local pub rather than a tourist spot. Open 11:30am–8pm.", tip:"The Mermaid Burger (grilled halibut on a bun) with the house tartar sauce. Order it." },
+  ],
+};
+
+const skagwayBeerChoices = {
+  label: "Post-Train Beer — Pick One", time: "~5:00 PM",
+  options: [
+    { id:"skagbrew", title:"Skagway Brewing Co.", subtitle:"Broadway anchor · full food menu", icon:"beer", badge:"Right on Broadway", detail:"7th & Broadway — impossible to miss. Full tap list including the Spruce Tip Ale made with locally harvested spruce tips. Solid pub food if anyone needs a bite. The natural first stop after the railway drops you back in town.", tip:"You've been here this morning. The Spruce Tip is the order. One more before the ship." },
+    { id:"klondike", title:"Klondike Brewing",    subtitle:"Quieter · more laid-back vibe", icon:"beer", badge:"Good backup option",   detail:"Smaller operation, more neighborhood feel. Good backup if Skagway Brewing is overrun with cruise passengers after the railway returns. Same general area, less foot traffic, more relaxed.", tip:"Walk here if Skagway Brewing has a 20-minute wait. Worth the extra 2 minutes." },
+  ],
 };
 
 // ── PACKING LISTS ───────────────────────────────────────────────────
@@ -777,7 +806,7 @@ const TABS = [
   { id:"journey",   label:"Journey", icon:"route" },
   { id:"dinners",   label:"Eat",     icon:"utensils" },
   { id:"breweries", label:"Beer",    icon:"beer" },
-  { id:"maps",      label:"Maps",    icon:"map" },
+
 ];
 const orderedDays = dayDates.map(d => allDays.find(x => x.id === d.dayId));
 const REGION = { vancouver:"Vancouver, BC", cruise:"The Cruise", anchorage:"Anchorage, AK" };
@@ -938,15 +967,58 @@ function Node({ item, idx, day, isFirst, isLast, expanded, setExpanded }) {
   );
 }
 function D({ icon, label, value, tip, top }) {
+  const isAddress = label === "Where" && value && !value.startsWith("⚠️");
+  const mapsUrl = isAddress
+    ? "https://maps.apple.com/?q=" + encodeURIComponent(value)
+    : null;
+  const valueNode = isAddress
+    ? <a href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ ...fi, fontSize:12.5, color:T.glacierDeep, lineHeight:1.55, textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>{value}<Icon name="externalLink" size={11} /></a>
+    : <span style={{ ...fi, fontSize:12.5, color:T.ink, fontStyle: tip?"italic":"normal", lineHeight:1.55 }}>{value}</span>;
   return (
     <div style={{ display:"flex", gap:9, marginTop: top?8:0, paddingTop: top?8:0, borderTop: top?`1px solid ${T.rule}`:"none", marginBottom:5 }}>
       <span style={{ color: tip?T.rust:T.inkFaint, paddingTop:1, flexShrink:0 }}><Icon name={icon} size={14} /></span>
-      <div><span style={{ ...fi, fontSize:8.5, color: tip?T.rust:T.inkFaint, letterSpacing:"1.4px", textTransform:"uppercase", fontWeight:700, display:"block", marginBottom:2 }}>{label}</span><span style={{ ...fi, fontSize:12.5, color:T.ink, fontStyle: tip?"italic":"normal", lineHeight:1.55 }}>{value}</span></div>
+      <div><span style={{ ...fi, fontSize:8.5, color: tip?T.rust:T.inkFaint, letterSpacing:"1.4px", textTransform:"uppercase", fontWeight:700, display:"block", marginBottom:2 }}>{label}</span>{valueNode}</div>
     </div>
   );
 }
 
 // ── Juneau split lanes ───────────────────────────────────────────────────────
+function ChoiceLanes({ data }) {
+  const cols = data.options.length;
+  const colColors = ["#1B4965","#065F46","#7C3A00","#5B21B6"];
+  return (
+    <div style={{ display:"flex", gap:0, animation:"fadeUp .4s ease both" }}>
+      <div style={{ width:54, flexShrink:0 }} />
+      <div style={{ width:48, position:"relative", flexShrink:0, display:"flex", justifyContent:"center" }}>
+        <div style={{ position:"absolute", top:0, bottom:0, left:"50%", width:2, marginLeft:-1, background:T.rule }} />
+      </div>
+      <div style={{ flex:1, minWidth:0, margin:"6px 0 10px" }}>
+        <div style={{ ...fi, fontSize:9.5, letterSpacing:"2px", textTransform:"uppercase", color:T.glacierDeep, fontWeight:700, display:"flex", alignItems:"center", gap:6, marginBottom:9 }}>
+          <Icon name="utensils" size={14}/> {data.label} · {data.time}
+        </div>
+        <div style={{ display:"flex", gap:8 }}>
+          {data.options.map((opt, i) => (
+            <div key={opt.id} style={{ flex:1, background:T.card, border:`1px solid ${T.rule}`, borderRadius:11, padding:"11px 9px", display:"flex", flexDirection:"column", gap:6, boxShadow:`0 2px 8px ${T.shadow}` }}>
+              <div style={{ display:"flex", alignItems:"center", gap:7 }}>
+                <div style={{ width:32, height:32, borderRadius:"50%", background:colColors[i%colColors.length]+"22", display:"grid", placeItems:"center", color:colColors[i%colColors.length], flexShrink:0 }}>
+                  <Icon name={opt.icon} size={16} />
+                </div>
+                <div>
+                  <div style={{ ...ff, fontWeight:700, fontSize:12, color:T.ink, lineHeight:1.2 }}>{opt.title}</div>
+                  <div style={{ ...fi, fontSize:10, color:T.dim, lineHeight:1.2 }}>{opt.subtitle}</div>
+                </div>
+              </div>
+              {opt.badge && <div style={{ ...fi, fontSize:9, letterSpacing:"0.5px", color:colColors[i%colColors.length], background:colColors[i%colColors.length]+"18", borderRadius:4, padding:"2px 6px", alignSelf:"flex-start" }}>{opt.badge}</div>}
+              <div style={{ ...fi, fontSize:11, color:T.dim, lineHeight:1.55 }}>{opt.detail}</div>
+              {opt.tip && <div style={{ ...fi, fontSize:10, color:T.ink, background:T.paper2, borderRadius:6, padding:"6px 8px", borderLeft:`2px solid ${colColors[i%colColors.length]}`, lineHeight:1.5 }}>💡 {opt.tip}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Lanes() {
   return (
     <div style={{ display:"flex", gap:0, animation:"fadeUp .4s ease both" }}>
@@ -983,6 +1055,10 @@ function DayView({ day, back, openDay, expanded, setExpanded }) {
   visItems.forEach(({it,i}) => {
     rows.push(<Node key={i} item={it} idx={i} day={day} isFirst={firstReal && i===firstReal.i} isLast={lastReal && i===lastReal.i} expanded={expanded===i} setExpanded={setExpanded} />);
     if (day.id==="tue" && it.title.includes("Lunch —")) rows.push(<Lanes key="lanes" />);
+    if (day.id==="tue" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="juneau-lunch" data={juneauLunchChoices} />);
+    if (day.id==="tue" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="juneau-dinner" data={juneauDinnerChoices} />);
+    if (day.id==="wed" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="skagway-lunch" data={skagwayLunchChoices} />);
+    if (day.id==="wed" && it.title.includes("Post-Train Beer")) rows.push(<ChoiceLanes key="skagway-beer" data={skagwayBeerChoices} />);
   });
   return (
     <div style={{ animation:"slideIn .25s ease" }}>
@@ -1054,31 +1130,7 @@ function InfoList({ dayId, expanded, setExpanded }) {
 }
 
 // ── Maps ─────────────────────────────────────────────────────────────────────
-function Maps() {
-  const cards=[
-    { tag:"AUG 13–15", title:"Vancouver, BC", icon:"home", src:"https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=Gastown+Vancouver+BC&center=49.283,-123.108&zoom=13", pins:[["Oidé Coffee","coffee"],["Steamworks","beer"],["Stanley Park","sightseeing"],["Granville Island","food"],["Water Street Café","dinner"],["Canada Place","logistics"]] },
-    { tag:"AUG 22", title:"Anchorage, AK", icon:"bird", src:"https://www.google.com/maps/embed/v1/search?key=AIzaSyCAIXvuVm1WKharqKwocyp_7Kr7T8f88nc&q=49th+State+Brewing+Anchorage+AK&center=61.216,-149.895&zoom=13", pins:[["Snow City","coffee"],["Anchorage Museum","sightseeing"],["Coastal Trail","sightseeing"],["49th State","beer"],["ANC Airport","logistics"]] },
-  ];
-  return (
-    <div style={{ padding:"22px 0 0", display:"flex", flexDirection:"column", gap:16 }}>
-      <div><div style={{ ...fi, fontSize:10, letterSpacing:"2.5px", textTransform:"uppercase", color:T.sand, fontWeight:700 }}>Pinned stops</div><div style={{ ...ff, fontWeight:900, fontSize:"clamp(26px,7vw,34px)", color:T.ink, lineHeight:1.05 }}>Port Maps</div></div>
-      {cards.map((c,i)=>(
-        <div key={i} style={{ background:T.card, border:`1px solid ${T.rule}`, borderRadius:14, overflow:"hidden", boxShadow:`0 3px 12px ${T.shadow}` }}>
-          <div style={{ padding:"13px 16px", display:"flex", alignItems:"center", gap:11, borderBottom:`1px solid ${T.rule}` }}>
-            <div style={{ width:36, height:36, borderRadius:9, background:T.paper2, display:"grid", placeItems:"center", color:T.glacierDeep }}><Icon name={c.icon} size={19}/></div>
-            <div><div style={{ ...fi, fontSize:9, letterSpacing:"2px", color:T.inkFaint, textTransform:"uppercase", fontWeight:600 }}>{c.tag}</div><div style={{ ...ff, fontWeight:700, fontSize:18, color:T.ink }}>{c.title}</div></div>
-          </div>
-          <iframe title={c.title} width="100%" height="300" style={{ border:"none", display:"block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={c.src} />
-          <div style={{ padding:"12px 16px", display:"flex", flexWrap:"wrap", gap:6, background:T.paper2 }}>{c.pins.map(([n,t],j)=>{ const pin=PIN[t]||PIN.logistics; return <span key={j} style={{ ...fi, fontSize:10, padding:"3px 9px", background:pin.bg, color:pin.text, borderRadius:4, fontWeight:500 }}>{n}</span>; })}</div>
-        </div>
-      ))}
-      <div style={{ padding:"15px 16px", background:T.card, border:`1px solid ${T.rule}`, borderRadius:14, ...fi, fontSize:12, color:T.inkSoft, lineHeight:1.8 }}>
-        <div style={{ color:T.glacierDeep, fontWeight:700, letterSpacing:"2px", fontSize:9.5, textTransform:"uppercase", marginBottom:6, display:"flex", alignItems:"center", gap:6 }}><Icon name="ship" size={14}/> Cruise port maps</div>
-        Ketchikan, Juneau, Skagway, Glacier Bay, and Whittier are best navigated on the ground — ships dock at the town pier and everything is walkable or a short rideshare from the ship.
-      </div>
-    </div>
-  );
-}
+
 
 function Alerts({ day }) {
   const map = {
@@ -1168,8 +1220,7 @@ function App() {
           <DayView day={day} back={backToJourney} openDay={openDay} expanded={expanded} setExpanded={setExpanded} />
         ) : tab==="journey" ? (
           <Journey sim={sim} openDay={openDay} />
-        ) : tab==="maps" ? (
-          <Maps />
+
         ) : (
           <InfoList dayId={tab} expanded={expanded} setExpanded={setExpanded} />
         )}
