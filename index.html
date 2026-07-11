@@ -38,8 +38,8 @@ const allDays = [
       { time: "12:00 PM", emoji: "🚕", title: "Rideshare to Airbnb", detail: "2350 East 49th Ave. For 6 people with luggage you'll need two rideshares or a pre-booked van. Check-in is 3pm — call ahead to arrange an early bag drop.", type: "logistics", tip: "Uber XL or a pre-booked van transfer. International Arrivals pickup is Level 2, outer curb at YVR." },
       { time: "1:30 PM", emoji: "🍽️", title: "Lunch — Pick One", detail: "Three solid options near the Airbnb or a quick Uber away. Good first meal in Vancouver after the customs gauntlet.", type: "food", tip: "East Side Craft House and Lucky Taco are both close to the Airbnb. Rodney's is a 15-min Uber but a proper Vancouver institution." },
       { time: "2:30 PM", emoji: "🏠", title: "Check In + Freshen Up", detail: "Get settled. Regroup. Figure out who needs a nap and who's ready to roll.", type: "logistics" },
-      { time: "3:30 PM", emoji: "🌿", title: "Gastown Walkabout", detail: "Wander Water Street, see the steam clock, pop into shops. 15-min Uber from the Airbnb. Good gentle warm-up for a group that just crossed a border.", type: "sightseeing", tip: "Cobblestone streets. Comfortable shoes. Don't be that person." },
-      { time: "5:00 PM", emoji: "🍺", title: "Steamworks Brewpub", detail: "375 Water St, right on Water Street in Gastown. Big space, solid craft beer, great pub food — burgers, fish and chips, solid poutine. Easy to walk to after the Gastown stroll and big enough to handle a group of 6 without a fuss.", type: "beer", address: "375 Water St, Gastown", hours: "Daily 11:30am–midnight", tip: "Good spot to land after Gastown without going far. Also doubles as dinner if the group just wants to stay put." },
+      
+      { time: "5:00 PM", emoji: "🍺", title: "Pre-Dinner Beer — Pick One", detail: "Two solid East Van taprooms close to the Airbnb — see options below.", type: "beer", tip: "Both are a short Uber from the Airbnb. Neither requires going all the way downtown before dinner." },
       { time: "7:00 PM", emoji: "🍽️", title: "Dinner — Pick One", detail: "Three good options for the arrival night — easy, crowd-pleasing, and all handle a group of 6 well.", type: "dinner", tip: "Make a reservation regardless of which you pick. Six people without a rez on a Thursday night is a 45-minute wait." },
     ],
   },
@@ -954,6 +954,13 @@ function D({ icon, label, value, tip, top }) {
 
 // ── Juneau split lanes ───────────────────────────────────────────────────────
 // ── VANCOUVER CHOICE LANES DATA ─────────────────────────────────────────
+const vanThurBeerChoices = {
+  label: "Pre-Dinner Beer — Pick One", time: "5:00 PM",
+  options: [
+    { id:"eastvan",    title:"East Van Brewing Co.", subtitle:"East Van institution · 12 rotating taps", icon:"beer", badge:"Closest to Airbnb · ~8 min",  detail:"1st Ave & Clark Dr. Industrial-style taproom with a genuinely local neighbourhood feel. 12 rotating taps always experimenting with new styles. Beer garden out back for people-watching. Pro tip: grab takeout from DownLow Chicken nearby and bring it in.", tip:"The beer garden is the move if weather allows. Bring food — they encourage it." },
+    { id:"parallel49", title:"Parallel 49 Brewing",  subtitle:"Big taproom · food truck on-site",       icon:"beer", badge:"1950 Triumph St · ~12 min",    detail:"1950 Triumph St, East Van. One of Vancouver's best-known craft breweries. 70+ beers annually, great rotating taps, and a food truck parked outside with poutines, burgers, and doughnuts. Big space so no issue seating 6. Outdoor patio when the weather cooperates.", tip:"Go hungry — the food truck is legitimately good. The Passive Aggressive IPA is a local favourite if it's pouring." },
+  ],
+};
 const vanThurLunchChoices = {
   label: "Lunch — Pick One", time: "1:30 PM",
   options: [
@@ -1094,6 +1101,7 @@ function DayView({ day, back, openDay, expanded, setExpanded }) {
     if (day.id==="tue" && it.title.includes("Lunch —")) rows.push(<Lanes key="lanes" />);
     if (day.id==="tue" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="juneau-dinner" data={juneauDinnerChoices} />);
     if (day.id==="thu" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="van-thu-lunch" data={vanThurLunchChoices} />);
+    if (day.id==="thu" && it.title.includes("Pre-Dinner Beer")) rows.push(<ChoiceLanes key="van-thu-beer" data={vanThurBeerChoices} />);
     if (day.id==="thu" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="van-thu-dinner" data={vanThurDinnerChoices} />);
     if (day.id==="wed" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="skagway-lunch" data={skagwayLunchChoices} />);
     if (day.id==="wed" && it.title.includes("Post-Train Beer")) rows.push(<ChoiceLanes key="skagway-beer" data={skagwayBeerChoices} />);
