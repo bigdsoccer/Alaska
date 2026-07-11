@@ -36,11 +36,11 @@ const allDays = [
       { time: "10:45 AM", emoji: "✈️", title: "Land at YVR", detail: "AA 1415 wheels down. Welcome to Canada. Now begins the part nobody puts in the Instagram caption.", type: "logistics" },
       { time: "10:45–12:00", emoji: "🛃", title: "Canadian Customs & Baggage", detail: "Budget 60–75 minutes from wheels down to outside the terminal. Deplane → CBSA kiosks (scan passport, answer questions, get receipt) → officer queue → baggage claim → exit. Electronic kiosks are fast individually, but 6 people plus a full morning of international arrivals adds up.", type: "logistics", tip: "Download the ArriveCAN app before you leave Dallas and complete your declaration in advance. Have everyone's passport out before you hit the hall." },
       { time: "12:00 PM", emoji: "🚕", title: "Rideshare to Airbnb", detail: "2350 East 49th Ave. For 6 people with luggage you'll need two rideshares or a pre-booked van. Check-in is 3pm — call ahead to arrange an early bag drop.", type: "logistics", tip: "Uber XL or a pre-booked van transfer. International Arrivals pickup is Level 2, outer curb at YVR." },
-      { time: "1:00 PM", emoji: "☕", title: "Oidé Coffee", detail: "First coffee stop after clearing customs. Get the group caffeinated and oriented before tackling bag drop logistics.", type: "coffee", tip: "10-min Uber from the Airbnb. Good fuel before figuring out the rest of the afternoon." },
+      { time: "1:30 PM", emoji: "🍽️", title: "Lunch — Pick One", detail: "Three solid options near the Airbnb or a quick Uber away. Good first meal in Vancouver after the customs gauntlet.", type: "food", tip: "East Side Craft House and Lucky Taco are both close to the Airbnb. Rodney's is a 15-min Uber but a proper Vancouver institution." },
       { time: "2:30 PM", emoji: "🏠", title: "Check In + Freshen Up", detail: "Get settled. Regroup. Figure out who needs a nap and who's ready to roll.", type: "logistics" },
       { time: "3:30 PM", emoji: "🌿", title: "Gastown Walkabout", detail: "Wander Water Street, see the steam clock, pop into shops. 15-min Uber from the Airbnb. Good gentle warm-up for a group that just crossed a border.", type: "sightseeing", tip: "Cobblestone streets. Comfortable shoes. Don't be that person." },
       { time: "5:00 PM", emoji: "🍺", title: "Steamworks Brewpub", detail: "375 Water St, right on Water Street in Gastown. Big space, solid craft beer, great pub food — burgers, fish and chips, solid poutine. Easy to walk to after the Gastown stroll and big enough to handle a group of 6 without a fuss.", type: "beer", address: "375 Water St, Gastown", hours: "Daily 11:30am–midnight", tip: "Good spot to land after Gastown without going far. Also doubles as dinner if the group just wants to stay put." },
-      { time: "7:00 PM", emoji: "🍽️", title: "Group Dinner — Pick One", detail: "See the 'Group Dinners' tab for options. Thursday is the casual arrival night — save the energy for Friday.", type: "dinner", tip: "Make a reservation regardless of which you pick. Six people without a rez on Thursday night is asking for a 45-minute wait." },
+      { time: "7:00 PM", emoji: "🍽️", title: "Dinner — Pick One", detail: "Three good options for the arrival night — easy, crowd-pleasing, and all handle a group of 6 well.", type: "dinner", tip: "Make a reservation regardless of which you pick. Six people without a rez on a Thursday night is a 45-minute wait." },
     ],
   },
   {
@@ -570,6 +570,7 @@ const juneauSplit = {
 };
 
 
+
 // ── PACKING LISTS ───────────────────────────────────────────────────
 // Built out for Drew, Becca, and Mom. Captain can edit anytime.
 const packing = {
@@ -952,6 +953,26 @@ function D({ icon, label, value, tip, top }) {
 }
 
 // ── Juneau split lanes ───────────────────────────────────────────────────────
+// ── VANCOUVER CHOICE LANES DATA ─────────────────────────────────────────
+const vanThurLunchChoices = {
+  label: "Lunch — Pick One", time: "1:30 PM",
+  options: [
+    { id:"eastside",  title:"East Side Craft House", subtitle:"Burgers · wings · craft beer", icon:"beer",   badge:"Local East Van spot",        detail:"Classic pub food done right — smash burgers, crispy chicken, great wings, rotating craft taps. Low-key, spacious, and exactly the right energy for a group landing day lunch. About 10 min from the Airbnb.", tip:"Perfect arrival day vibe. Order the smash burger and whatever local IPA is on tap." },
+    { id:"luckytaco", title:"Lucky Taco",             subtitle:"Mexican street food",          icon:"flame",  badge:"Best tacos in East Van",      detail:"1109 Kingsway. Birria, al pastor, baja fish — proper Mexican street food close to the Airbnb. Casual counter service, colourful space, big enough for a group. One of the most consistently praised taco spots in East Vancouver.", tip:"Get the birria with the consommé dip. Don't skip it." },
+    { id:"rodneys",   title:"Rodney's Oyster Bar",    subtitle:"Fresh oysters · seafood",      icon:"star",   badge:"Vancouver institution",        detail:"1228 Hamilton St, Yaletown. Vancouver's most beloved oyster bar — raw bar, chowder, fish and chips, lobster rolls. Boisterous, fun, and a genuine Vancouver experience. Slightly farther (15 min Uber) but worth it for a proper welcome-to-Canada seafood lunch.", tip:"Order a dozen oysters to share, then everyone gets their own thing. The lobster roll is the move." },
+  ],
+};
+
+const vanThurDinnerChoices = {
+  label: "Dinner — Pick One", time: "7:00 PM",
+  options: [
+    { id:"earls",     title:"Earls Kitchen + Bar",    subtitle:"Elevated casual · everyone wins", icon:"utensils", badge:"Group-friendly · broad menu", detail:"Multiple Vancouver locations. Earls is the reliable Canadian group dinner — upscale casual with something for everyone. Thai chicken bowl, prime rib dip, fresh halibut, great cocktails. Big comfortable booths, easy reservations, and nobody goes hungry.", tip:"Great call for the arrival night — nobody has to make a hard decision and it's reliably excellent." },
+    { id:"margaritas",title:"Las Margaritas",          subtitle:"Mexican · Tex-Mex · great margs", icon:"flame",    badge:"Festive arrival night pick",  detail:"Authentic Mexican fare — fajitas, enchiladas, carne asada, monster margaritas. The kind of place that makes you feel like the trip has actually started. Fun, loud, communal energy. Good for a group that just cleared customs and wants to celebrate.", tip:"Order a pitcher of margaritas for the table immediately. Trust the process." },
+    { id:"cactusclub",title:"Cactus Club Cafe",        subtitle:"Waterfront views · polished menu", icon:"star",    badge:"Best views option",           detail:"Multiple locations — the Coal Harbour location has harbor and Stanley Park views. Mushroom striploin, Creole cream spinach dip, fresh Pacific salmon, famous crab dip. Upscale chain that genuinely delivers. Low intimidation factor, beautiful room.", tip:"The crab dip is one of the best things in Vancouver. Order it as a starter regardless of what else you get." },
+  ],
+};
+
+
 // ── CHOICE LANES DATA ────────────────────────────────────────────────────
 const juneauLunchChoices = {
   label: "Lunch — Pick One", time: "12:30 PM",
@@ -990,22 +1011,29 @@ const skagwayBeerChoices = {
 
 
 function ChoiceLanes({ data }) {
-  const cols = data.options.length;
   const colColors = ["#1B4965","#065F46","#7C3A00","#5B21B6"];
+  const ref = React.useRef(null);
+  const [narrow, setNarrow] = React.useState(true);
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const obs = new ResizeObserver(([e]) => setNarrow(e.contentRect.width < 420));
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
   return (
     <div style={{ display:"flex", gap:0, animation:"fadeUp .4s ease both" }}>
       <div style={{ width:54, flexShrink:0 }} />
       <div style={{ width:48, position:"relative", flexShrink:0, display:"flex", justifyContent:"center" }}>
         <div style={{ position:"absolute", top:0, bottom:0, left:"50%", width:2, marginLeft:-1, background:T.rule }} />
       </div>
-      <div style={{ flex:1, minWidth:0, margin:"6px 0 10px" }}>
+      <div ref={ref} style={{ flex:1, minWidth:0, margin:"6px 0 10px" }}>
         <div style={{ ...fi, fontSize:9.5, letterSpacing:"2px", textTransform:"uppercase", color:T.glacierDeep, fontWeight:700, display:"flex", alignItems:"center", gap:6, marginBottom:9 }}>
           <Icon name="utensils" size={14}/> {data.label} · {data.time}
         </div>
-        <div style={{ display:"flex", gap:8 }}>
+        <div style={{ display:"flex", flexDirection: narrow ? "column" : "row", gap:8 }}>
           {data.options.map((opt, i) => (
-            <div key={opt.id} style={{ flex:1, background:T.paper, border:`1px solid ${T.rule}`, borderRadius:11, padding:"11px 9px", display:"flex", flexDirection:"column", gap:6, boxShadow:`0 2px 8px ${T.shadow}` }}>
-              <div style={{ display:"flex", alignItems:"center", gap:7 }}>
+            <div key={opt.id} style={{ flex: narrow ? "none" : 1, background:T.paper, border:`1px solid ${T.rule}`, borderRadius:11, padding: narrow ? "12px 14px" : "11px 9px", display:"flex", flexDirection: narrow ? "row" : "column", alignItems: narrow ? "flex-start" : "stretch", gap: narrow ? 12 : 6, boxShadow:`0 2px 8px ${T.shadow}` }}>
+              <div style={{ display:"flex", alignItems:"center", gap:7, flexShrink:0 }}>
                 <div style={{ width:32, height:32, borderRadius:"50%", background:colColors[i%colColors.length]+"22", display:"grid", placeItems:"center", color:colColors[i%colColors.length], flexShrink:0 }}>
                   <Icon name={opt.icon} size={16} />
                 </div>
@@ -1014,9 +1042,11 @@ function ChoiceLanes({ data }) {
                   <div style={{ ...fi, fontSize:10, color:T.inkFaint, lineHeight:1.2 }}>{opt.subtitle}</div>
                 </div>
               </div>
+              <div style={{ flex:1, display:"flex", flexDirection:"column", gap:6 }}>
               {opt.badge && <div style={{ ...fi, fontSize:9, letterSpacing:"0.5px", color:colColors[i%colColors.length], background:colColors[i%colColors.length]+"18", borderRadius:4, padding:"2px 6px", alignSelf:"flex-start" }}>{opt.badge}</div>}
               <div style={{ ...fi, fontSize:11, color:T.inkFaint, lineHeight:1.55 }}>{opt.detail}</div>
               {opt.tip && <div style={{ ...fi, fontSize:10, color:T.ink, background:T.paper2, borderRadius:6, padding:"6px 8px", borderLeft:`2px solid ${colColors[i%colColors.length]}`, lineHeight:1.5 }}>💡 {opt.tip}</div>}
+              </div>
             </div>
           ))}
         </div>
@@ -1063,6 +1093,8 @@ function DayView({ day, back, openDay, expanded, setExpanded }) {
     if (day.id==="tue" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="juneau-lunch" data={juneauLunchChoices} />);
     if (day.id==="tue" && it.title.includes("Lunch —")) rows.push(<Lanes key="lanes" />);
     if (day.id==="tue" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="juneau-dinner" data={juneauDinnerChoices} />);
+    if (day.id==="thu" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="van-thu-lunch" data={vanThurLunchChoices} />);
+    if (day.id==="thu" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="van-thu-dinner" data={vanThurDinnerChoices} />);
     if (day.id==="wed" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="skagway-lunch" data={skagwayLunchChoices} />);
     if (day.id==="wed" && it.title.includes("Post-Train Beer")) rows.push(<ChoiceLanes key="skagway-beer" data={skagwayBeerChoices} />);
   });
