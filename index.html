@@ -67,7 +67,9 @@ const allDays = [
       { time: "9:30 AM", emoji: "🧳", title: "Pack Up + Check Out", detail: "Coordinate the group. Confirm everyone has their passport. Nobody leaves a charger behind.", type: "logistics" },
       { time: "10:30 AM", emoji: "🚢", title: "Head to Canada Place", detail: "Boarding window is 11:30am–12:00pm. Head out by 10:30am to give yourselves time to drop luggage, check in, and clear security without rushing — especially with 6 people and a full cruise worth of bags.", type: "logistics", tip: "Princess check-in can have queues. Being there at 11:30am on the dot is fine — earlier is always better with a group." },
       { time: "11:30 AM–12:00 PM", emoji: "⚓", title: "Board the Ship", detail: "Your boarding window. Rooms aren't ready until 1–2pm — head straight to the Lido deck, get a drink, and start the mental transition to Alaska mode.", type: "logistics", tip: "Muster drill is mandatory before sailaway. Don't be the one who holds it up." },
-      { time: "7:20 PM", emoji: "🍽️", title: "Ketchikan Dining Room — Night 1", detail: "First dinner in the main dining room at 7:20pm. Good chance to meet your server team, get oriented to the dinner routine, and decompress after boarding day chaos.", type: "onboard", tip: "Night 1 MDR tends to be a lighter, welcoming menu. Worth going — the waitstaff relationship pays off all week." },
+      { time: "4:00 PM", emoji: "🎉", title: "SailAway Celebration", detail: "Deck 16 Midship. The official send-off as the ship pulls away from Vancouver. Live music, dancing, and the city skyline shrinking behind you. This is the moment the trip actually starts.", type: "onboard", tip: "Don't be below deck for this. Grab a drink and be on Deck 16 at 4pm — the views leaving Vancouver Harbour are something." },
+      { time: "9:30 PM", emoji: "🎭", title: "Night 1 Entertainment — Pick One", detail: "Two great options at the same time — see the selector below.", type: "onboard", tip: "Music Trivia is better for a group that wants to play together. Almost Impossible is the bigger spectacle." },
+      { time: "7:20 PM", emoji: "🍽️", title: "Ketchikan Dining Room — Night 1", detail: "First dinner in the main dining room — reservation confirmed at 7:20pm. Good chance to meet your server team, get oriented to the dinner routine, and decompress after boarding day chaos.", type: "onboard", tip: "Night 1 MDR tends to be a lighter, welcoming menu. Worth going — the waitstaff relationship pays off all week." },
     ],
   },
 
@@ -128,7 +130,14 @@ const allDays = [
       { time: "All Day", emoji: "🌊", title: "Scenic Inside Passage Cruising", detail: "The ship winds through a labyrinth of fjords, channels, and islands. This is what Alaska looks like before Alaska starts.", type: "scenic", tip: "Get outside early. The light in the Inside Passage at 7am is something else entirely." },
       { time: "Morning", emoji: "🐋", title: "Wildlife Watch", detail: "Humpback whales, orcas, Dall's porpoises, harbor seals, and bald eagles are all common. Binoculars on deck.", type: "wildlife", tip: "Bow and Lido deck are your best vantage points. Bring a jacket — windier than you think." },
       { time: "Afternoon", emoji: "🍽️", title: "Explore the Ship + Make Reservations", detail: "Get oriented, try the dining options. Book specialty restaurants (Crown Grill, Sabatini's) for later in the week — tonight is a good night to do it.", type: "onboard", tip: "Book Crown Grill for Glacier Bay night. You'll want something special after a full day in the park." },
+      { time: "9:45 AM", emoji: "🧩", title: "Speedy Sudoku Challenge", detail: "Princess Live! Deck 7 Aft. Competitive Sudoku — go solo or rope in whoever's awake. Good low-key morning activity while the Inside Passage rolls by.", type: "onboard", tip: "Grab a coffee from the Lido first. Brain fuel required." },
+      { time: "10:00 AM", emoji: "🏔️", title: "Welcome to Alaska", detail: "Princess Theater. Orientation talk covering Alaska history, culture, and what to expect at each port. Great primer before Ketchikan tomorrow — especially useful for the parents.", type: "onboard", tip: "Get there by 10am sharp — theater fills up on sea days." },
+      { time: "11:00 AM", emoji: "🗺️", title: "Explore Alaska", detail: "Princess Theater. Deep dive into Alaskan geography, wildlife, and port highlights. Back-to-back with Welcome to Alaska — easy to stay for both sessions.", type: "onboard", tip: "Pairs perfectly with the 10am session. Just stay in your seat." },
+      { time: "12:15 PM", emoji: "🦅", title: "North to Alaska", detail: "Princess Theater. The naturalist series continues — covers the broader Alaska story and what you'll see over the next week.", type: "onboard", tip: "Bring lunch from the Lido if you want. Pretty relaxed in the theater." },
+      { time: "2:00 PM", emoji: "🐋", title: "Naturalist: Humpback Whale's Journey", detail: "Princess Theater. Dedicated talk on humpback whale behavior, migration, and where you're most likely to spot them on this route. You're doing whale watching in Juneau on Day 4 — perfect timing.", type: "onboard", tip: "Highly recommend before the Juneau whale watch. You'll know exactly what you're looking at." },
+      { time: "3:00 PM", emoji: "🥃", title: "History of Whiskey", detail: "The Shops Resort, Deck 7 Forward. A tasting-style talk on whiskey history, styles, and distillation. Check the Princess app for whether this requires a ticket or is included with Plus.", type: "onboard", tip: "Drewski and Mikey's kind of afternoon. Check ticket requirements in the app." },
       { time: "7:00 PM", emoji: "🍽️", title: "Ketchikan Dining Room — Night 2", detail: "Second night in the MDR. Waitstaff know you by now, routine is set. Good sea day dinner.", type: "onboard", tip: "Use tonight to lock in any remaining specialty restaurant bookings." },
+      { time: "9:30 PM", emoji: "🎭", title: "Rock Opera", detail: "Princess Theater. Full production rock opera show — classic rock reimagined as theatrical performance. One of the more talked-about shows on this sailing.", type: "onboard", tip: "Head to the theater by 9:10pm to get 6 seats together." },
     ],
   },
   {
@@ -145,7 +154,10 @@ const allDays = [
       { time: "~11:30 AM", emoji: "🍺", title: "Baleen Brewing", detail: "Small local brewery punching above its weight. Good lunch anchor before the distillery and the walk back to the ship.", type: "beer", tip: "Midday means the pint feels earned AND the crowds haven't packed it yet. Win-win." },
       { time: "~12:30 PM", emoji: "🥃", title: "Uncharted Alaska Distillery", detail: "Local craft spirits — spruce tip gin tastes like Southeast Alaska in a glass. Last stop before heading back to the ship.", type: "beer", tip: "Keep an eye on the clock. All-aboard at 2pm means walking back by 1:30pm." },
       { time: "2:00 PM", emoji: "🚢", title: "All Aboard · Sailaway", detail: "All-aboard is 2pm — the ship departs shortly after. The scenery leaving Ketchikan through the channel is spectacular. Get a drink and get on deck.", type: "logistics", tip: "Early port day means you'll be back on the ship by early afternoon. Use the rest of the day to decompress and explore the ship." },
-      { time: "7:00 PM", emoji: "🍽️", title: "Ketchikan Dining Room — Night 3", detail: "Dinner in the MDR after a full first port day. Good time to regroup, rest the feet, and debrief the creek walk and totem poles.", type: "onboard", tip: "Plenty of buffer between all-aboard and the 7pm seating. No need to rush back early." },
+      { time: "7:00 PM", emoji: "🍽️", { time: "3:00 PM", emoji: "📍", title: "Explore Juneau & Skagway", detail: "Vista Lounge, Deck 7 Aft. The ship's port presenter covers what's coming in Juneau and Skagway — excursion tips, timing, and what not to miss. Perfect prep for the two biggest port days of the trip.", type: "onboard", tip: "Especially useful for the parents so everyone knows what to expect. Worth attending together." },
+      { time: "6:30 PM", emoji: "🎵", title: "Irish Music Session", detail: "O'Malley's Irish Pub, Deck 6 Aft. Live Irish music in the ship's pub — a good informal start to the Ketchikan evening if you're back on the ship early.", type: "onboard", tip: "Order a Guinness. O'Malley's is a proper pub atmosphere." },
+      title: "Ketchikan Dining Room — Night 3", detail: "Dinner in the MDR after a full first port day. Good time to regroup, rest the feet, and debrief the creek walk and totem poles.", type: "onboard", tip: "Plenty of buffer between all-aboard and the 7pm seating. No need to rush back early." },
+      { time: "8:00 PM", emoji: "🎬", title: "Evening — Pick One", detail: "Two solid options after dinner — see the selector below.", type: "onboard", tip: "Ghostbusters on the outdoor deck is a top-tier experience. Bring a blanket." },
     ],
   },
   {
@@ -198,7 +210,9 @@ const allDays = [
       { time: "Morning", emoji: "🎙️", title: "Park Ranger Narration", detail: "A National Park Service ranger boards the ship and narrates live — geology, glacial history, wildlife. Genuinely excellent.", type: "onboard", tip: "Check the Princess app for where the ranger will be presenting from." },
       { time: "All Day", emoji: "🐋", title: "Wildlife: The Full Card", detail: "Humpback whales, orcas, harbor seals on ice floes, brown bears on the coastline, bald eagles, mountain goats. Binoculars mandatory.", type: "wildlife", tip: "Dress in full layers. Colder than you expect this deep into the bay even in August." },
       { time: "Afternoon", emoji: "🏔️", title: "Johns Hopkins Inlet", detail: "If conditions allow, the ship may navigate into this rarely visited inlet — cascading waterfalls, snow-capped peaks, jaw-dropping.", type: "scenic", tip: "Captain's discretion based on ice conditions. Cross your fingers." },
+      { time: "1:30 PM", emoji: "🎙️", title: "Glacier Bay NPS Ranger Program", detail: "Princess Theater. The dedicated National Park Service ranger program — covers the geology, ecology, and history of Glacier Bay before the ship reaches the most dramatic sections. Deeper than the live deck narration.", type: "onboard", tip: "Even if you attend the live deck narration later, this is a different and worthwhile session. The glacial retreat science is genuinely fascinating." },
       { time: "5:40 PM", emoji: "⭐", title: "Dinner — The Catch (Booked)", detail: "Your reserved table at The Catch — Princess's seafood specialty restaurant. You just spent the day in Glacier Bay watching glaciers calve. Eating fresh Alaskan seafood on a ship in Alaskan waters tonight is exactly right. This is the special dinner of the cruise.", type: "onboard", tip: "Reservation confirmed at 5:40pm. Dress it up a little — you've earned a proper dinner tonight." },
+      { time: "7:30 PM", emoji: "🎭", title: "Viva La Musica", detail: "Princess Theater. A Latin-flavored production show — dancing, live music, big energy. Good post-Catch entertainment to cap the biggest day of the cruise.", type: "onboard", tip: "7:30pm works perfectly after a 5:40pm dinner. Head straight from The Catch." },
     ],
   },
   {
@@ -210,7 +224,9 @@ const allDays = [
       { time: "Morn6:00pm–8:30pm", emoji: "🧊", title: "College Fjord Scenic Cruising", detail: "Prince William Sound. 16 glaciers named after Ivy League colleges. Harvard Glacier dominates the end of the fjord and is actively advancing while most glaciers retreat. You'll hear it calve.", type: "scenic", tip: "Northbound typically does College Fjord in the evening — verify against your ship's schedule." },
       { time: "All Day", emoji: "🦦", title: "Wildlife: Prince William Sound", detail: "Sea otters floating on their backs wrapped in kelp, harbor seals on ice chunks, Dall's porpoises, humpbacks. Peak Alaska.", type: "wildlife", tip: "Sea otters wrapped in kelp = peak Alaska group chat content." },
       { time: "6:00 PM", emoji: "🍽️", title: "Ketchikan Dining Room — Final Night", detail: "Last dinner in the main dining room. A proper send-off with your waitstaff who've been with you all week. This is the night to say your goodbyes, linger a little, and mark the end of the cruise right.", type: "onboard", tip: "Tip your server team tonight — gratuities are auto-charged but a cash tip goes a long way. They've been with you all week." },
+      { time: "12:15 PM", emoji: "🦅", title: "North to Alaska Enrichment", detail: "Princess Theater. The final enrichment talk of the voyage — a recap and reflection on everything you've seen. Good watch while College Fjord glaciers pass outside.", type: "onboard", tip: "Bring lunch from the Lido and watch the glaciers between sessions." },
       { time: "Evening", emoji: "🥂", title: "Last Night on the Ship", detail: "Pack bags tonight. Set luggage outside by midnight if using Princess's service. Last dinner, last drinks, last Alaskan water views from a deck. Make it count.", type: "onboard", tip: "Don't over-drink. You have a full Anchorage day tomorrow and a midnight flight. Future you will thank you." },
+      { time: "9:30 PM", emoji: "🎵", title: "Music Trivia", detail: "Princess Live! Deck 7 Aft. Last night trivia — a perfect final group activity before the packing chaos begins.", type: "onboard", tip: "Last night energy is different. Everyone's nostalgic and loose. Go for it." },
     ],
   },
 
@@ -1017,6 +1033,24 @@ const skagwayBeerChoices = {
 };
 
 
+
+// ── SHIP EVENTS CHOICE DATA ───────────────────────────────────────────────
+const day1NightChoices = {
+  label: "Tonight's Entertainment — Pick One", time: "9:30 PM",
+  options: [
+    { id:"mixtape",    title:"Music Trivia: Mix Tape", subtitle:"Princess Live! · Deck 7 Aft",    icon:"star", badge:"Interactive · team up",    detail:"Competitive music trivia with a mix-tape theme. Princess Live! is a smaller venue, more intimate and rowdy. Great for a group that wants to play together on embarkation night.", tip:"Get there early to grab a table for 6. It fills up fast." },
+    { id:"impossible", title:"Almost Impossible",      subtitle:"Princess Theater · Deck 7",       icon:"star", badge:"Full production show",          detail:"A full Princess production show — acrobatics, illusions, and big-stage entertainment. The kind of show you can't see anywhere else. Princess productions are genuinely impressive.", tip:"Head to the theater 15–20 min early to get a good row together." },
+  ],
+};
+
+const day3EveChoices = {
+  label: "Evening — Pick One", time: "8:00 PM",
+  options: [
+    { id:"ghostbusters", title:"80s Movie: Ghostbusters", subtitle:"Deck 17 Midship · outdoor screen", icon:"star", badge:"Open air · fun for everyone",     detail:"Ghostbusters on the big outdoor screen as the ship sails through the Inside Passage. Grab a blanket and a drink. Hard to beat as a Ketchikan night wind-down.", tip:"Bring a layer — Deck 17 at night in the Inside Passage is cold. Worth it." },
+    { id:"irishmusic",   title:"80s Music Trivia",         subtitle:"Princess Live! · Deck 7 Aft",       icon:"beer", badge:"9:30 PM · interactive",          detail:"80s music trivia in Princess Live! after the movie option. Later start so you can do both Ghostbusters and trivia if you want — or skip the movie and head straight here.", tip:"9:30pm start — works as a second act after the outdoor movie or as a standalone." },
+  ],
+};
+
 function ChoiceLanes({ data }) {
   const colColors = ["#1B4965","#065F46","#7C3A00","#5B21B6"];
   const ref = React.useRef(null);
@@ -1103,6 +1137,8 @@ function DayView({ day, back, openDay, expanded, setExpanded }) {
     if (day.id==="thu" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="van-thu-lunch" data={vanThurLunchChoices} />);
     if (day.id==="thu" && it.title.includes("Pre-Dinner Beer")) rows.push(<ChoiceLanes key="van-thu-beer" data={vanThurBeerChoices} />);
     if (day.id==="thu" && it.title.includes("Dinner —")) rows.push(<ChoiceLanes key="van-thu-dinner" data={vanThurDinnerChoices} />);
+    if (day.id==="sat-morning" && it.title.includes("Night 1 Entertainment")) rows.push(<ChoiceLanes key="day1-night" data={day1NightChoices} />);
+    if (day.id==="mon" && it.title.includes("Evening — Pick One")) rows.push(<ChoiceLanes key="day3-eve" data={day3EveChoices} />);
     if (day.id==="wed" && it.title.includes("Lunch —")) rows.push(<ChoiceLanes key="skagway-lunch" data={skagwayLunchChoices} />);
     if (day.id==="wed" && it.title.includes("Post-Train Beer")) rows.push(<ChoiceLanes key="skagway-beer" data={skagwayBeerChoices} />);
   });
